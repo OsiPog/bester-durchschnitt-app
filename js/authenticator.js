@@ -2,7 +2,7 @@ const openLogin = () => {
     window.location.href = `https://beste.schule/oauth/authorize?client_id=${CLIENT_ID}&scope=&response_type=code&state=j1zcofU74Bv2eHFroqrwM9Tx8DsVdnmIOvNxzPZs`
 }
 
-const getAccessToken = async() => {
+const getToken = async() => {
     // Checking if there's a token in localStorage
     // content is being assigned not compared
     if (content = localStorage["bester-durchschnitt-app"]) {
@@ -33,7 +33,14 @@ const getAccessToken = async() => {
     }
 }
 
-// Server doesn't have it implemented yet
+// Deletes the ACCESS_TOKEN from localStorage and reloads the page
+const forgetToken = () => {
+    delete localStorage["bester-durchschnitt-app"];
+    window.location.reload(true);
+}
+
+// It's not implemented on the server. I'll leave it here, maybe there will be
+// such a feature one day.
 const deleteToken = async() => {
     let response = await fetch(`https://beste.schule/oauth/revoke`, {
         method: "POST",
@@ -45,6 +52,18 @@ const deleteToken = async() => {
             + `&client_id=${CLIENT_ID}`
             + `&client_secret=${CLIENT_SECRET}`
     })
+}
+
+// Sends a GET request to the server using the ACCESS_TOKEN to authenticate,
+// that request is awaited and the result of the request is converted to a JSON
+// this conversion is awaited too.
+// Returns the answer to the request as JSON
+const requestJSON = async(route) => {
+    return await (await fetch(`https://beste.schule/api/${route}`, {
+        headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`
+        }
+    })).json();
 }
 
 // Constants
