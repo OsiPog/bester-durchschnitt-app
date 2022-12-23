@@ -1,6 +1,6 @@
-const openLogin = () => {
-    window.location.href = `https://beste.schule/oauth/authorize?client_id=${CLIENT_ID}&scope=&response_type=code&state=j1zcofU74Bv2eHFroqrwM9Tx8DsVdnmIOvNxzPZs`
-}
+// Globals
+let ACCESS_TOKEN;
+let ACCESS_TOKEN_ID; // not used yet
 
 const getToken = async() => {
     // Checking if there's a token in localStorage
@@ -27,6 +27,7 @@ const getToken = async() => {
     })
     const response_json = await response.json();
     ACCESS_TOKEN = response_json.access_token;
+
     if (ACCESS_TOKEN) {
         localStorage["bester-durchschnitt-app"] = vigenere(
             ACCESS_TOKEN, "besterdurchschnitt")
@@ -39,45 +40,13 @@ const forgetToken = () => {
     window.location.reload(true);
 }
 
-// It's not implemented on the server. I'll leave it here, maybe there will be
-// such a feature one day.
+// That doesn't work yet
 const deleteToken = async() => {
-    let response = await fetch(`https://beste.schule/oauth/revoke`, {
-        method: "POST",
+    let response = await fetch(`https://beste.schule/oauth/tokens/${ACCESS_TOKEN_ID}`, {
+        method: "DELETE",
         headers: {
-            "Authorization": `Bearer ${ACCESS_TOKEN}`,
-            "Content-Type": "application/json"
-        },
-        body: `token=${ACCESS_TOKEN}`
-            + `&client_id=${CLIENT_ID}`
-            + `&client_secret=${CLIENT_SECRET}`
-    })
-}
-
-// Sends a GET request to the server using the ACCESS_TOKEN to authenticate,
-// that request is awaited and the result of the request is converted to a JSON
-// this conversion is awaited too.
-// Returns the answer to the request as JSON
-const requestJSON = async(route) => {
-    return await (await fetch(`https://beste.schule/api/${route}`, {
-        headers: {
-            Authorization: `Bearer ${ACCESS_TOKEN}`
+            "Content-Type": "application/json",
         }
-    })).json();
-}
-
-// Constants
-let CLIENT_ID;
-let CLIENT_SECRET;
-let ACCESS_TOKEN;
-
-// Use a differently configured app when testing the app locally
-if (window.location.href.match(/^http:\/\/localhost:/g)) {
-    CLIENT_ID = "59";
-    CLIENT_SECRET = "u6Cc5niB2TebFYgMA9peSbbmcg6uBQ0U6iPJC5jy";
-}
-else {
-    CLIENT_ID = "58";
-    CLIENT_SECRET = "pemoySGLPS3ruxizFNi7qEgP9rsEiV8WbFWzqRLY";
+    })
 }
 
