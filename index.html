@@ -1,14 +1,39 @@
 <!DOCTYPE html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="icon/icon32.png">
+    <link rel="icon" type="image/x-icon" href="img/icon32.png">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>bester Durchschnitt</title>
 </head>
+
 <body>
+    <div hidden id="not-logged-in-text">
+        Hier könnten deine Noten stehen. Melde dich an um fortzufahren.
+    </div>
+    <img hidden id="spinner" src="img/spinner1024.png"/>
+
+    <div class="flex-con-overlay">
+        <div id="header">
+            <img class="icon" src="img/icon64.png"/>
+            <span class="title">bester.durchschnitt</span>
+            <select hidden id="student-selection">
+                <option></option>
+            </select>
+            <a hidden class="btn" id="login"><span>Anmelden mit</span><img class="icon" src="https://beste.schule/favicon.svg"></a>
+        </div>
+    </div>
+
+    <div class="flex-con-root">
+    </div>
+
     <script src="js/utils.js"></script>
+    <script src="js/oauth_client.config.js"></script>
     <script src="js/authenticator.js"></script>
+    <script src="js/request.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>

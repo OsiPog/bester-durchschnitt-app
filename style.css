@@ -1,0 +1,140 @@
+/* General Style */
+
+@font-face {
+	font-family: Nunito;
+	src: url(font/Nunito-Regular.ttf);
+}
+
+@keyframes spin {
+    0% {
+      transform: translate(-50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%) rotate(360deg);
+    }
+}
+
+:root {
+	font-family: "Nunito";
+	font-size: 12px;
+}
+
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+}
+
+.flex-con-overlay {
+    position: absolute;
+    width: 100vw;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-con-root {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+    border-style: none;
+    border-radius: 0.5rem;
+
+    background-color: #0057bf;
+    opacity: 90%;
+
+    color: white;
+    font-size: 1.2rem;
+    text-decoration: none;
+
+    padding: 0.7rem 1.5rem 0.7rem 1.5rem;
+
+    transition: all;
+    transition-duration: 0.05s;
+
+    cursor: pointer;
+    user-select: none;
+}
+.btn:hover {
+    opacity: 100%;
+}
+.btn:active {
+    outline: #0057bf88;
+    outline-style: solid;
+}
+
+/* index.html */
+
+#header {
+    min-height: 4.3rem;
+    
+    background-color: white;
+
+    filter: drop-shadow(0 0 0.5rem lightgray);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+    #header>.icon {
+        height: 3rem;
+        margin: 1rem;
+    }
+    #header>.title {
+        font-size: 1.4rem;
+        user-select: none;
+    }
+    #header>#student-selection {
+        margin-left: auto;
+        margin-right: 0.4rem;
+
+        font-family: inherit;
+        font-size: 1.3rem;
+        color: gray;
+
+        border: none;
+        background-color: rgb(0,0,0,0);
+    }
+        #header>#student-selection>option {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    #header>#login {
+        margin-left: auto;
+        margin-right: 1rem;
+
+        display: flex;
+        flex-direction: row;
+
+        align-items: center;
+    }
+        #header>#login>.icon {
+            height: 1.3rem;
+            margin-left: 0.5rem;
+            filter: drop-shadow(0 0 0.1rem black)
+        }
+
+#not-logged-in-text {
+    position: absolute;
+    top: 40%;
+    
+    font-size: 3rem;
+    text-align: center;
+    color: gray;
+
+    user-select: none;
+}
+#spinner {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%);
+    
+    width: 12rem;
+
+    animation: 0.8s linear infinite spin;
+}
