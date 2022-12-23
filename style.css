@@ -130,6 +130,8 @@ body {
     color: gray;
 
     user-select: none;
+
+    margin: 0.5rem;
 }
 #spinner {
     position: absolute;
