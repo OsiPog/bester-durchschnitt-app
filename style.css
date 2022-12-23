@@ -120,7 +120,10 @@ body {
 
 #not-logged-in-text {
     position: absolute;
-    top: 40%;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 100vw;
     
     font-size: 3rem;
     text-align: center;
