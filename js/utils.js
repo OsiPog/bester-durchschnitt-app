@@ -27,3 +27,9 @@ function vigenere(string, key_string, decrypt = false) {
 
     return new_string;
 }
+
+// Toggle the hidden attribute of the loading spinner
+const toggleLoading = () => {
+    const img_spinner = document.querySelector("#spinner");
+    img_spinner.toggleAttribute("hidden");
+}

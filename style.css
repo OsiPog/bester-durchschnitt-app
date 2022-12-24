@@ -5,15 +5,6 @@
 	src: url(font/Nunito-Regular.ttf);
 }
 
-@keyframes spin {
-    0% {
-      transform: translate(-50%) rotate(0deg);
-    }
-    100% {
-      transform: translate(-50%) rotate(360deg);
-    }
-}
-
 :root {
 	font-family: "Nunito";
 	font-size: 12px;
@@ -26,6 +17,7 @@
 
 body {
     margin: 0;
+    overflow: hidden;
 }
 
 .flex-con-overlay {
@@ -133,6 +125,24 @@ body {
 
     margin: 0.5rem;
 }
+
+
+@keyframes spinner-spin {
+    0% {
+      transform: translate(-50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%) rotate(360deg);
+    }
+}
+@keyframes spinner-emph-pulse {
+    0%, 100% {
+        clip-path: polygon(0 0, 0 20%, 50% 50%, 20% 0);
+    }
+    50% {
+        clip-path: polygon(0 0, 0 100%, 50% 50%, 100% 0);
+    }
+}
 #spinner {
     position: absolute;
     top: 40%;
@@ -140,6 +150,31 @@ body {
     transform: translate(-50%);
     
     width: 12rem;
+    height: 12rem;
 
-    animation: 0.8s linear infinite spin;
+    clip-path: circle(50%);
+    background-color: #4a93ec;
+
+    animation: 0.8s linear infinite spinner-spin;
 }
+    #spinner #inner {
+        background-color: white;
+        position: absolute;
+
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 85%;
+        height: 85%;
+        clip-path: circle(50%);
+    }
+    #spinner #emphasized {
+        background-color: #0057bf;
+
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(0 0, 0 100%, 100% 0);
+
+        animation: 1.7s ease-in-out infinite spinner-emph-pulse;
+    }

@@ -3,11 +3,6 @@ let ACCOUNT;
 let SELECTED_STUDENT_ID;
 let SELECTED_INTERVAL_ID;
 
-const toggleLoading = () => {
-    const img_spinner = document.querySelector("#spinner");
-    img_spinner.toggleAttribute("hidden");
-}
-
 const init = async() => {
     toggleLoading();
     // Depending on the login status change these elements
@@ -59,7 +54,7 @@ const init = async() => {
         select_user.appendChild(option);
     }
 
-    // Add an event listener
+    // Update SELECTED_STUDENT_ID on change of the selection
     select_user.addEventListener("change", () => {
         let selected = select_user.querySelector("option[selected]");
         SELECTED_STUDENT_ID = selected.getAttribute("value");
