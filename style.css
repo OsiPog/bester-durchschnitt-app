@@ -162,6 +162,9 @@ body {
     clip-path: circle(50%);
     background-color: #4a93ec;
 
+    transition: all;
+    transition-duration: 0.2s;
+
     animation: 0.9s linear infinite spinner-spin;
 }
     #spinner #inner {
