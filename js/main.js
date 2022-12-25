@@ -1,13 +1,12 @@
 // Globals
-let ACCOUNT;
-let SELECTED_STUDENT_ID;
+let STUDENT;
 let SELECTED_INTERVAL_ID;
 
 const init = async() => {
-    toggleLoading();
+    setLoading(true);
     // Depending on the login status change these elements
     const a_login = document.querySelector("#login");
-    const select_user = document.querySelector("#student-selection");
+    const select_student = document.querySelector("#student-selection");
     const div_not_logged_in = document.querySelector("#not-logged-in-text");
     
     // Try to get the access token (from localStorage or from a request)
@@ -20,7 +19,7 @@ const init = async() => {
 
     // If the user isn't logged in just add a link to the login button
     if (!ACCESS_TOKEN) {
-        toggleLoading();
+        setLoading(false);
 
         // show login button, hide user select and show the login text
         a_login.removeAttribute("hidden");
@@ -30,36 +29,29 @@ const init = async() => {
         return;
     }
 
-    // hide login button, show user select and hide the login text
-    select_user.removeAttribute("hidden");
-    
-    // Get the account which just logged in
-    ACCOUNT = await requestJSON("me");
-    console.log(ACCOUNT);
-
-    // Set default values to the global variables
-    SELECTED_STUDENT_ID = ACCOUNT["students"][0].id
-    SELECTED_INTERVAL_ID = ACCOUNT["year"]["intervals"][0].id
+    // Get all students connected to the account
+    const students = await requestJSON("students");
 
     // put students to the student selector
-    select_user.innerHTML = "";
-    for(const student of ACCOUNT["students"]) {
+    select_student.innerHTML = "";
+    for(const student of students) {
         const option = document.createElement("option");
+        // Student id as value and name as displayed text
         option.innerText = student.forename + " " + student.name;
         option.setAttribute("value", student.id)
-
-        if (student.id === SELECTED_STUDENT_ID) 
-            option.toggleAttribute("selected")
-
-        select_user.appendChild(option);
+        select_student.appendChild(option);
     }
 
     // Update SELECTED_STUDENT_ID on change of the selection
-    select_user.addEventListener("change", () => {
-        let selected = select_user.querySelector("option[selected]");
-        SELECTED_STUDENT_ID = selected.getAttribute("value");
+    select_student.addEventListener("change", async() => {
+        await changeStudent(select_student.value);
     })
 
+    // student selection
+    select_student.removeAttribute("hidden");
+
+    // Load default student
+    await changeStudent(select_student.value);
 }
 
 init()
