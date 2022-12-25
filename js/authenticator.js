@@ -11,11 +11,11 @@ const getToken = async() => {
     }
 
     // Getting the authentication code from the url
-    let code = window.location.href.match(/(?<=code=).+?(?=&)/g);
+    const code = window.location.href.match(/(?<=code=).+?(?=&)/g);
     if (!code) return
 
     // Send a post request to the oauth server to get the access token
-    let response = await fetch("https://beste.schule/oauth/token", {
+    const response = await fetch("https://beste.schule/oauth/token", {
         method: "POST",
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -42,7 +42,7 @@ const forgetToken = () => {
 
 // That doesn't work yet
 const deleteToken = async() => {
-    let response = await fetch(`https://beste.schule/oauth/tokens/${ACCESS_TOKEN_ID}`, {
+    const response = await fetch(`https://beste.schule/oauth/tokens/${ACCESS_TOKEN_ID}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
