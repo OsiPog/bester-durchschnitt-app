@@ -76,6 +76,7 @@ body {
     #header>.icon {
         height: 3rem;
         margin: 1rem;
+        user-select: none;
     }
     #header>.title {
         font-size: 1.4rem;
@@ -107,7 +108,9 @@ body {
         #header>#login>.icon {
             height: 1.3rem;
             margin-left: 0.5rem;
-            filter: drop-shadow(0 0 0.1rem black)
+            filter: drop-shadow(0 0 0.1rem black);
+
+            user-select: none;
         }
 
 #not-logged-in-text {
@@ -137,11 +140,15 @@ body {
 }
 @keyframes spinner-emph-pulse {
     0%, 100% {
-        clip-path: polygon(0 0, 0 20%, 50% 50%, 20% 0);
+        clip-path: polygon(0 0, 0 15%, 0 20%, 50% 50%, 15% 0, 20% 0);
+    }
+    25%, 75% {
+        clip-path: polygon(0 0, 0 100%, 0 100%, 50% 50%, 100% 0, 100% 0);
     }
     50% {
-        clip-path: polygon(0 0, 0 100%, 50% 50%, 100% 0);
+        clip-path: polygon(0 0, 0 100%, 70% 100%, 50% 50%, 100% 70%, 100% 0);
     }
+
 }
 #spinner {
     position: absolute;
@@ -155,9 +162,11 @@ body {
     clip-path: circle(50%);
     background-color: #4a93ec;
 
-    animation: 0.8s linear infinite spinner-spin;
+    animation: 0.9s linear infinite spinner-spin;
 }
     #spinner #inner {
+        /* display: none; */
+
         background-color: white;
         position: absolute;
 
@@ -176,5 +185,5 @@ body {
         height: 100%;
         clip-path: polygon(0 0, 0 100%, 100% 0);
 
-        animation: 1.7s ease-in-out infinite spinner-emph-pulse;
+        animation: 2.5s linear infinite spinner-emph-pulse;
     }

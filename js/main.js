@@ -41,7 +41,7 @@ const init = async() => {
     SELECTED_STUDENT_ID = ACCOUNT["students"][0].id
     SELECTED_INTERVAL_ID = ACCOUNT["year"]["intervals"][0].id
 
-    // Update the student selector
+    // put students to the student selector
     select_user.innerHTML = "";
     for(const student of ACCOUNT["students"]) {
         const option = document.createElement("option");
