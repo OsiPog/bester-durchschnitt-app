@@ -28,8 +28,34 @@ function vigenere(string, key_string, decrypt = false) {
     return new_string;
 }
 
-// Toggle the hidden attribute of the loading spinner
-const toggleLoading = () => {
+// Toggle visibility of loading spinner
+const setLoading = (start_loading) => {
     const img_spinner = document.querySelector("#spinner");
-    img_spinner.toggleAttribute("hidden");
+    if (start_loading) {
+        img_spinner.removeAttribute("hidden");
+        img_spinner.setAttribute("style", "opacity:100%");
+    }
+    else {
+        img_spinner.setAttribute("style", "opacity:0%");
+        // Delay for adding the hidden attribute for the blend of the 
+        // transition
+        setTimeout(() => img_spinner.setAttribute("hidden", ""), 2000)
+    }
+}
+
+// Creating Object tree (nested objects)
+function objectTree(keys, object) {
+    let level;
+    let prev_level = object;
+    for (let key of keys) {
+        level = prev_level[key];
+        if (!level) {
+            level = Object();
+            prev_level[key] = level;
+        }
+
+        prev_level = level;
+    }
+
+    return level; // return the last level/layer of the tree
 }
