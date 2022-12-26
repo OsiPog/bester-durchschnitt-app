@@ -59,3 +59,9 @@ function objectTree(keys, object) {
 
     return level; // return the last level/layer of the tree
 }
+
+// TEMP
+const log = (to_log) => {
+    const div_debug = document.querySelector("#debug");
+    div_debug.innerText = to_log
+}

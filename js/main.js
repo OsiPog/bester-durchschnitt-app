@@ -3,6 +3,10 @@ let STUDENT;
 let CATEGORIES;
 let SELECTED_INTERVAL_ID;
 
+let SERVER = window.location.href.match(
+    /^https?:\/\/((localhost|\d+\.\d+\.\d+\.\d+):\d+|osipog\.github\.io\/bester-durchschnitt-app)/g,
+)[0];
+
 const init = async() => {
     setLoading(true);
     // Depending on the login status change these elements
@@ -13,10 +17,10 @@ const init = async() => {
     // Try to get the access token (from localStorage or from a request)
     await getToken();
 
-    // Remove the access code from the URL
-    if (code = window.location.href.match(/(\?|&)code=.+?state=.+?($|&)/g)) {
-        window.location.href = window.location.href.replace(code, "")
-    }
+    // // Remove the access code from the URL
+    // if (code = window.location.href.match(/(\?|&)code=.+?state=.+?($|&)/g)) {
+    //     window.location.href = window.location.href.replace(code, "")
+    // }
 
     // If the user isn't logged in just add a link to the login button
     if (!ACCESS_TOKEN) {
@@ -26,7 +30,8 @@ const init = async() => {
         a_login.removeAttribute("hidden");
         div_not_logged_in.removeAttribute("hidden");
 
-        a_login.setAttribute("href", `https://beste.schule/oauth/authorize?client_id=${CLIENT_ID}&scope=&response_type=code&state=j1zcofU74Bv2eHFroqrwM9Tx8DsVdnmIOvNxzPZs`)
+        a_login.setAttribute("href", 
+            `https://beste.schule/oauth/authorize?client_id=${CLIENT_ID}&scope=&response_type=code&state=j1zcofU74Bv2eHFroqrwM9Tx8DsVdnmIOvNxzPZs`)
         return;
     }
 
