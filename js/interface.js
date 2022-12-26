@@ -24,7 +24,6 @@ const changeStudent = async(student_id) => {
     //             subjects: {
     //                 local_id: {
     //                     name,
-    //                     average,
     //                     types: {
     //                         name: {
     //                             category_id,
@@ -65,7 +64,6 @@ const changeStudent = async(student_id) => {
             interval["subjects"][response_subject["local_id"]] = subject
 
             subject["name"] = response_subject["name"];
-            subject["average"] = null;
             subject["types"] = Object();
         }
     }
