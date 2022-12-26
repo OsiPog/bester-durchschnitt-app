@@ -149,10 +149,23 @@ const updateGrades = () => {
         const div_subject = document.createElement("div");
         root_div_grades.appendChild(div_subject);
         div_subject.className = "subject";
+
+
         // Title of the subject
         const h2_subject = document.createElement("h2");
         div_subject.appendChild(h2_subject)
-        h2_subject.innerText = subject.name;
+        
+        const span_subject_title = document.createElement("span");
+        h2_subject.appendChild(span_subject_title);
+        span_subject_title.className = "title";
+
+        // Adding 3 dots, shorten the name if the name is longer than 24 
+        // Characters
+        span_subject_title.innerText = subject["name"];
+        if (subject["name"].length > 24) {
+            span_subject_title.innerText = 
+                `${subject["name"].slice(0,20)}... (${local_id})`;
+        }
         
         // Body of the subject for categories and types
         const div_subject_body = document.createElement("div");
