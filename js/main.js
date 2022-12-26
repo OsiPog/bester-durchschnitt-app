@@ -1,5 +1,6 @@
 // Globals
 let STUDENT;
+let CATEGORIES;
 let SELECTED_INTERVAL_ID;
 
 const init = async() => {
