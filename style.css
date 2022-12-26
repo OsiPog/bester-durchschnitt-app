@@ -2,7 +2,7 @@
 
 @font-face {
 	font-family: Nunito;
-	src: url(font/Nunito-Regular.ttf);
+	src: url(font/Nunito-VariableFont_wght.ttf);
 }
 
 :root {
@@ -190,3 +190,101 @@ body {
 
         animation: 2.5s linear infinite spinner-emph-pulse;
     }
+
+#grades {
+    overflow-y: scroll;
+    scrollbar-width: none;
+    padding: 1rem;
+}
+        #grades>.subject>h2 {
+            font-weight: normal;
+            font-size: 2rem;
+            margin: 0.5rem 0 0.5rem 0;
+
+            display: flex;
+            flex-direction: row;
+        }
+            #grades>.subject>h2>.average {
+                font-weight: bold;
+
+                background-color: #0057bf;
+                filter: drop-shadow(0 0 0.5rem black);
+                
+                padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+                margin-left: auto;
+
+                color: white;
+
+                border-radius: 1rem;
+            }
+        #grades>.subject>.body {
+            width: inherit;
+
+            padding: 0 1rem 2rem 1rem;
+
+            border-top-style: solid;
+            border-width: 0.1rem;
+            border-color: lightgray;
+
+            display: flex;
+            flex-direction: row;
+        }
+            #grades>.subject>.body>p {
+                margin: 0.3rem 0 0.3rem 0;
+                font-size: 1.5rem;
+            }
+            #grades>.subject>.body>.category {
+                position: relative;
+
+                margin: 0.5rem 0.4rem 0 0.4rem;
+
+                border-color: #4a93ec;
+                border-style: solid;
+                border-radius: 0.4rem;
+
+                min-height: 5rem;
+
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+
+                align-content: center;
+                text-align: center;
+            }
+                #grades>.subject>.body>.category>h3 {
+                    margin: 0;
+                    padding: 0 0.3rem 0 0.3rem;
+
+                    font-weight: normal;
+                    font-size: 1.5rem;
+
+                    color: #0057bf;
+                }
+                #grades>.subject>.body>.category>.types {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                }
+                    #grades>.subject>.body>.category>.types>.grade-type {
+                        background-color: #4a93ecAA;
+
+                        margin: 0.5rem;
+                        padding: 0.5rem;
+
+                        border-left-color: #0057bf;
+                        border-left-width: 0.4rem;
+                        border-left-style: solid;
+                    }
+                        #grades>.subject>.body>.category>.types>.grade-type>h4 {
+                            margin: 0 0.2rem 0 0.2rem;
+                            
+                            color: #0057bf;
+                            font-size: 1.2rem;
+                            font-weight: normal;
+                        }
+                        #grades>.subject>.body>.category>.types>.grade-type>.grades {
+                            font-size: 1.7rem;
+
+                            display: flex;
+                            justify-content: space-around;
+                        }
