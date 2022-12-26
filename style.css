@@ -191,7 +191,7 @@ body {
         animation: 2.5s linear infinite spinner-emph-pulse;
     }
 
-
+/* wide screen mode */
 @media(min-width:110vh) {
     #grades {
         display: grid !important;
@@ -209,9 +209,13 @@ body {
     flex-direction: column;
 
     overflow: scroll;
-    max-height: 92vh;
+    max-height: 90vh;
     scrollbar-width: none;
 }
+        #grades>.subject:last-child {
+        /* On mobile the system buttons are making part of the subjects not visible */
+            padding-bottom: 6vh;
+        }
         #grades>.subject>h2 {
             font-weight: normal;
             margin: 0.5rem 0 0.5rem 0;
