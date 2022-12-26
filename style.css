@@ -198,9 +198,8 @@ body {
         grid-template-columns: 1fr 1fr;
     }
     #grades>.subject {
-        width: 30vw;
+        width: 40vw;
         margin: 0 auto 0 auto;
-        width: 90%;
     }
 }
 #grades {
@@ -330,7 +329,10 @@ body {
                                 width: 1.3em;
                                 height: 1.3em;
 
+                                line-height: auto;
+
                                 margin: 0.3rem;
+                                padding: 0.3rem;
 
                                 clip-path: circle(50%);
                             
