@@ -344,9 +344,3 @@ body {
                                 clip-path: circle(50%);
                             
                             }
-
-#debug {
-    z-index: 99999;
-    position: absolute;
-    background-color: white;
-}
