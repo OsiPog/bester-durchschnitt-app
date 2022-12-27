@@ -1,4 +1,4 @@
-# <span>![](icon/icon32.png)</span> bester.durchschnitt
+# <span>![](img/icon32.png)</span> bester.durchschnitt
 
 A web-app that displays average marks from https://beste.schule/
 
