@@ -119,16 +119,6 @@ const changeStudent = async(student_id) => {
     updateGrades();
 }
 
-const calculateAverages = () => {
-    for(const local_id in 
-        STUDENT["intervals"][SELECTED_INTERVAL_ID]["subjects"]) {
-        
-        for(const category in CATEGORIES[local_id]) {
-
-        }
-    }
-}
-
 const updateGrades = () => {
     // The base container for all subject
     const root_div_grades = document.querySelector("#grades");
