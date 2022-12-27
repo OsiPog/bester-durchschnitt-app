@@ -150,9 +150,9 @@ const updateGrades = () => {
         // Adding 3 dots, shorten the name if the name is longer than 24 
         // Characters
         span_subject_title.innerText = subject["name"];
-        if (subject["name"].length > 24) {
-            span_subject_title.innerText = 
-                `${subject["name"].slice(0,20)}... (${local_id})`;
+
+        if (subject["name"].length > 16) {
+            span_subject_title.innerText = local_id;
         }
         
         // Body of the subject for categories and types

@@ -17,11 +17,6 @@ const init = async() => {
     // Try to get the access token (from localStorage or from a request)
     await getToken();
 
-    // // Remove the access code from the URL
-    // if (code = window.location.href.match(/(\?|&)code=.+?state=.+?($|&)/g)) {
-    //     window.location.href = window.location.href.replace(code, "")
-    // }
-
     // If the user isn't logged in just add a link to the login button
     if (!ACCESS_TOKEN) {
         setLoading(false);

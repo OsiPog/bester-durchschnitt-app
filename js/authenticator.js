@@ -5,7 +5,7 @@ let ACCESS_TOKEN_ID; // not used yet
 const getToken = async() => {
     // Checking if there's a token in localStorage
     // content is being assigned not compared
-    if (content = localStorage["bester-durchschnitt-app"]) {
+    if (content = localStorage.getItem("bester-durchschnitt-app")) {
         ACCESS_TOKEN = vigenere(content, "besterdurchschnitt", decrypt=true);
         return;
     }
@@ -36,7 +36,7 @@ const getToken = async() => {
 
 // Deletes the ACCESS_TOKEN from localStorage and reloads the page
 const forgetToken = () => {
-    delete localStorage["bester-durchschnitt-app"];
+    localStorage.removeItem("bester-durchschnitt-app");
     window.location.reload(true);
 }
 

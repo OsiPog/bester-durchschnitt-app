@@ -7,7 +7,7 @@
 
 :root {
 	font-family: "Nunito";
-	font-size: 12px;
+	font-size: min(1.5vh, 12px);
 }
 
 
@@ -67,7 +67,9 @@ body {
     
     background-color: white;
 
-    filter: drop-shadow(0 0 0.5rem lightgray);
+    box-shadow: 0 0 0.5rem black;
+
+    z-index: 10;
 
     display: flex;
     flex-direction: row;
@@ -116,9 +118,10 @@ body {
 #not-logged-in-text {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%,-50%);
 
-    width: 100vw;
+    width: 90vw;
     
     font-size: 2.5rem;
     text-align: center;
@@ -168,8 +171,6 @@ body {
     animation: 0.9s linear infinite spinner-spin;
 }
     #spinner #inner {
-        /* display: none; */
-
         background-color: white;
         position: absolute;
 
@@ -218,6 +219,7 @@ body {
         }
         #grades>.subject>h2 {
             font-weight: normal;
+            word-wrap: normal;
             margin: 0.5rem 0 0.5rem 0;
 
             min-height: 3rem;
@@ -342,5 +344,4 @@ body {
                                 padding: 0.3rem;
 
                                 clip-path: circle(50%);
-                            
                             }
