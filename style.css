@@ -60,6 +60,25 @@ body {
     outline-style: solid;
 }
 
+.icon-btn {
+    background-color: #0057bf;
+    border-radius: 1rem;
+
+    opacity: 80%;
+
+    aspect-ratio: 1/1;
+
+    transition: all;
+    transition-duration: 0.05s;
+}
+.icon-btn:hover {
+    opacity: 100%;
+}
+.icon-btn:active {
+    outline: #0057bf88;
+    outline-style: solid;
+}
+
 /* index.html */
 
 #header {
@@ -109,7 +128,7 @@ body {
     }
         #header>#login>.icon {
             height: 1.3rem;
-            margin-left: 0.5rem;
+            margin: auto 0 auto 0.5rem;
             filter: drop-shadow(0 0 0.1rem black);
 
             user-select: none;
@@ -128,8 +147,6 @@ body {
     color: gray;
 
     user-select: none;
-
-    margin: 0.5rem;
 }
 
 
@@ -159,8 +176,8 @@ body {
     left: 50%;
     transform: translate(-50%);
     
-    width: 12rem;
-    height: 12rem;
+    width: 20vmin;
+    height: 20vmin;
 
     clip-path: circle(50%);
     background-color: #4a93ec;
@@ -180,7 +197,7 @@ body {
 
         width: 85%;
         height: 85%;
-        clip-path: circle(50%);
+        border-radius: 50%; /*circle*/
     }
     #spinner #emphasized {
         background-color: #0057bf;
@@ -345,3 +362,40 @@ body {
 
                                 clip-path: circle(50%);
                             }
+                #grades>.subject>.body>.category>.weighting {
+                    display: flex;
+                    flex-direction: row;
+
+                    justify-content: center;
+
+                    font-size: 2rem;
+
+                    padding: 0.5rem;
+
+                    align-content: center;
+                }
+                #grades>.subject>.body>.category>.weighting>input {
+                    font-family: inherit;
+                    margin: 0 0.3rem 0 0.3rem;
+
+                    text-align: center;
+                    font-size: inherit;
+
+                    width: 2.4rem;
+                    height: 2rem;
+
+                    padding: 0.3rem;
+
+                    border-radius: 1rem;
+                    border-color: #4a93ec;
+                    border-width: 0.3rem;
+                    border-style: solid;
+
+                    outline: none;
+                }
+                #grades>.subject>.body>.category>.weighting>.icon-btn {
+                    height: 2rem;
+
+                    padding: 0.5rem;
+                }
+                
