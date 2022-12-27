@@ -8,6 +8,13 @@ let SERVER = window.location.href.match(
 )[0];
 
 const init = async() => {
+    // Check for style debug parameter
+    if (window.location.href.match(/(\?|&)debug=(.+)?(style)/g)) {
+        const sample_subject = document.querySelector("#sample-subject-1");
+        sample_subject.removeAttribute("hidden");
+        return;
+    }
+
     setLoading(true);
     // Depending on the login status change these elements
     const a_login = document.querySelector("#login");
