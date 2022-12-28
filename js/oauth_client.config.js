@@ -1,2 +1,0 @@
-let CLIENT_ID = 62;
-let CLIENT_SECRET = "zIFgtlRobJw5mypgrYnFCp40CUWd8ueOF8LkpO3Q";

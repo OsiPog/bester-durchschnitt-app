@@ -3,10 +3,6 @@ let STUDENT;
 let CATEGORIES;
 let SELECTED_INTERVAL_ID;
 
-let SERVER = window.location.href.match(
-    /^https?:\/\/((localhost|\d+\.\d+\.\d+\.\d+):\d+|osipog\.github\.io\/bester-durchschnitt-app)/g,
-)[0];
-
 const init = async() => {
     // Check for style debug parameter
     if (window.location.href.match(/(\?|&)debug=(.+)?(style)/g)) {
@@ -22,18 +18,20 @@ const init = async() => {
     const div_not_logged_in = document.querySelector("#not-logged-in-text");
     
     // Try to get the access token (from localStorage or from a request)
-    await getToken();
+    await Authenticator.getToken();
 
     // If the user isn't logged in just add a link to the login button
-    if (!ACCESS_TOKEN) {
+    if (!Authenticator.access_token) {
         setLoading(false);
 
         // show login button, hide user select and show the login text
         a_login.removeAttribute("hidden");
         div_not_logged_in.removeAttribute("hidden");
 
-        a_login.setAttribute("href", 
-            `https://beste.schule/oauth/authorize?client_id=${CLIENT_ID}&scope=&response_type=code&state=j1zcofU74Bv2eHFroqrwM9Tx8DsVdnmIOvNxzPZs`)
+        a_login.setAttribute("href", `https://beste.schule/oauth/authorize`
+            + `?client_id=${OAuthClient.id}`
+            + `&scope=&response_type=code`
+            + `&state=j1zcofU74Bv2eHFroqrwM9Tx8DsVdnmIOvNxzPZs`)
         return;
     }
 
