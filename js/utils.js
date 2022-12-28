@@ -37,7 +37,7 @@ const requestJSON = async(route) => {
     try {
         response = await fetch(`https://beste.schule/api/${route}`, {
             headers: {
-                Authorization: `Bearer ${ACCESS_TOKEN}`
+                Authorization: `Bearer ${Authenticator.access_token}`
             }
         });
     }
