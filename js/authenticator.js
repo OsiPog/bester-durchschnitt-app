@@ -1,5 +1,6 @@
 const Authenticator = {
-    access_token,
+    access_token: null,
+    
     getToken: async() => {
         // Checking if there's a token in localStorage
         // content is being assigned not compared
@@ -10,11 +11,12 @@ const Authenticator = {
         }
 
         // Getting the authentication code from the url
-        const code = window.location.href.match(/code=.+?(?=&)/g);
+        const code = URLParameterHandler.getAll()["code"];
         if (!code) return
 
         // Send a post request to the oauth server to get the access token
-        const response = await fetch("https://beste.schule/oauth/token", {
+        const response = await (await fetch(
+            "https://beste.schule/oauth/token", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -22,14 +24,13 @@ const Authenticator = {
             body: `grant_type=authorization_code`
                 + `&client_id=${OAuthClient.id}`
                 + `&client_secret=${OAuthClient.secret}`
-                + `&${code}`
-        })
-        const response_json = await response.json();
-        ACCESS_TOKEN = response_json.access_token;
+                + `&code=${code}`
+        })).json()
+        Authenticator.access_token = response.access_token;
 
-        if (ACCESS_TOKEN) {
+        if (Authenticator.access_token) {
             localStorage.setItem("bester-durchschnitt-app", vigenere(
-                ACCESS_TOKEN, "besterdurchschnitt"))
+                Authenticator.access_token, "besterdurchschnitt"))
         }
     },
 
@@ -37,6 +38,6 @@ const Authenticator = {
     forgetToken: () => {
         localStorage.removeItem("bester-durchschnitt-app");
         window.location.reload(true);
-    }
+    },
 }
 
