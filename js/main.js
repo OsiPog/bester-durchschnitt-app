@@ -4,10 +4,13 @@ let CATEGORIES;
 let SELECTED_INTERVAL_ID;
 
 const init = async() => {
-    //
-    if (URLParameterHandler.check() === "STOP") {
-        return;
-    }
+    // Load the config from localStorage
+    Config.load();
+    // Initialized
+    OAuthClient.init();
+
+    // Check the parameters for any action
+    if (URLParameterHandler.check() === "STOP") return;
 
     setLoading(true);
     // Depending on the login status change these elements
@@ -26,12 +29,7 @@ const init = async() => {
         a_login.removeAttribute("hidden");
         div_not_logged_in.removeAttribute("hidden");
 
-        a_login.setAttribute("href", `https://beste.schule/oauth/authorize`
-            + `?client_id=${OAuthClient.id}`
-            + `&scope=` // Not yet supported by beste.schule
-            + `&response_type=code` // Access code
-            + `&state=j1zcofU74Bv2eHFroqrwM9Tx8DsVdnmIOvNxzPZs`
-        )
+        a_login.setAttribute("href", OAuthClient.getAuthorizeLink())
         return;
     }
 
