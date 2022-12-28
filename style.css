@@ -7,7 +7,7 @@
 
 :root {
 	font-family: "Nunito";
-	font-size: min(1.5vh, 12px);
+	font-size: clamp(8px, 1.5vh, 12px);
 }
 
 
