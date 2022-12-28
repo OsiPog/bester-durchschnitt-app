@@ -15,7 +15,7 @@ const requestJSON = async(route) => {
     // error. To fix this get a new token.
     catch {
         // Deletes the token from localStorage and reloads
-        forgetToken();
+        Authenticator.forgetToken();
     }
 
     // Return only the data attribute because meta is irrelevant

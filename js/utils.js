@@ -28,6 +28,30 @@ function vigenere(string, key_string, decrypt = false) {
     return new_string;
 }
 
+// Sends a GET request to the server using the ACCESS_TOKEN to authenticate,
+// that request is awaited and the result of the request is converted to a JSON
+// this conversion is awaited too.
+// Returns the answer to the request as JSON
+const requestJSON = async(route) => {
+    let response;
+    try {
+        response = await fetch(`https://beste.schule/api/${route}`, {
+            headers: {
+                Authorization: `Bearer ${ACCESS_TOKEN}`
+            }
+        });
+    }
+    // If the token got deleted from the server this request will throw and
+    // error. To fix this get a new token.
+    catch {
+        // Deletes the token from localStorage and reloads
+        Authenticator.forgetToken();
+    }
+
+    // Return only the data attribute because meta is irrelevant
+    return (await response.json()).data
+}
+
 // Toggle visibility of loading spinner
 const setLoading = (start_loading) => {
     const img_spinner = document.querySelector("#spinner");
@@ -60,8 +84,3 @@ function objectTree(keys, object) {
     return level; // return the last level/layer of the tree
 }
 
-// TEMP
-const log = (to_log) => {
-    const div_debug = document.querySelector("#debug");
-    div_debug.innerText = to_log
-}
