@@ -21,6 +21,9 @@ const init = async() => {
     // Try to get the access token (from localStorage or from a request)
     await Authenticator.getToken();
 
+    // Remove the access code from the URL
+    URLParameterHandler.removeParameters("code", "state");
+
     // If the user isn't logged in just add a link to the login button
     if (!Authenticator.access_token) {
         setLoading(false);
