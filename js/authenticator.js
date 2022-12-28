@@ -1,12 +1,11 @@
 const Authenticator = {
     access_token: null,
-    
+
     getToken: async() => {
         // Checking if there's a token in localStorage
         // content is being assigned not compared
-        if (content = localStorage.getItem("bester-durchschnitt-app")) {
-            Authenticator.access_token = 
-                vigenere(content, "besterdurchschnitt", decrypt=true);
+        if (token = Config.get("access_token")) {
+            Authenticator.access_token = token;
             return;
         }
 
@@ -29,14 +28,13 @@ const Authenticator = {
         Authenticator.access_token = response.access_token;
 
         if (Authenticator.access_token) {
-            localStorage.setItem("bester-durchschnitt-app", vigenere(
-                Authenticator.access_token, "besterdurchschnitt"))
+            Config.set("access_token", Authenticator.access_token);
         }
     },
 
     // Deletes the access token from localStorage and reloads the page
     forgetToken: () => {
-        localStorage.removeItem("bester-durchschnitt-app");
+        Config.set("access_token", "");
         window.location.reload(true);
     },
 }
