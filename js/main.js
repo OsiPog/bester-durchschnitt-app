@@ -4,10 +4,8 @@ let CATEGORIES;
 let SELECTED_INTERVAL_ID;
 
 const init = async() => {
-    // Check for style debug parameter
-    if (window.location.href.match(/(\?|&)debug=(.+)?(style)/g)) {
-        const sample_subject = document.querySelector("#sample-subject-1");
-        sample_subject.removeAttribute("hidden");
+    //
+    if (URLParameterHandler.check() === "STOP") {
         return;
     }
 
@@ -30,8 +28,10 @@ const init = async() => {
 
         a_login.setAttribute("href", `https://beste.schule/oauth/authorize`
             + `?client_id=${OAuthClient.id}`
-            + `&scope=&response_type=code`
-            + `&state=j1zcofU74Bv2eHFroqrwM9Tx8DsVdnmIOvNxzPZs`)
+            + `&scope=` // Not yet supported by beste.schule
+            + `&response_type=code` // Access code
+            + `&state=j1zcofU74Bv2eHFroqrwM9Tx8DsVdnmIOvNxzPZs`
+        )
         return;
     }
 

@@ -74,7 +74,7 @@ function objectTree(keys, object) {
     for (let key of keys) {
         level = prev_level[key];
         if (!level) {
-            level = Object();
+            level = new Object();
             prev_level[key] = level;
         }
 
