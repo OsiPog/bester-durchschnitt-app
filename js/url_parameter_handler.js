@@ -27,11 +27,6 @@ const URLParameterHandler = {
     check: () => {
         const parameters = URLParameterHandler.getAll();
 
-        if (parameters["oauth_client"]) {
-            OAuthClient.id = parameters["oauth_client"][0];
-            OAuthClient.secret =  parameters["oauth_client"][1];
-        }
-
         // Check lastly because it could return "STOP"
         if (params = parameters["debug"]) {
             if (params.includes("style")) {
