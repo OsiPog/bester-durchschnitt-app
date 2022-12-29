@@ -2,7 +2,7 @@
 // the student id
 const changeStudent = async(student_id) => {
     // For pre selection of categories
-    const EXAM_STRINGS = [
+    const exam_strings = [
         "KL", "Klausur", "KA", "Kl", "Klassenarbeit", "Ka", "K"];
 
     setLoading(true);
@@ -44,37 +44,42 @@ const changeStudent = async(student_id) => {
     // }
 
     // Copying certain attributes to the dict
-    STUDENT = Object();
-    STUDENT["forename"] = response["forename"];
-    STUDENT["name"] = response["name"];
-    STUDENT["gender"] = response["gender"];
-    STUDENT["id"] = response["id"];
+    STUDENT = {
+        "forename": response["forename"],
+        "name": response["name"],
+        "gender": response["gender"],
+        "id": response["id"]
+    };
     
     // Create all intervals and subjects
-    STUDENT["intervals"] = Object();
+    STUDENT["intervals"] = new Object();
     for(const response_interval of response["intervals"]) {
-        let interval = Object();
+        let interval = {
+            "name": response_interval["name"],
+            "subjects": {}
+        };
+
         STUDENT["intervals"][response_interval["id"]] = interval;
 
-        interval["name"] = response_interval["name"];
-        interval["subjects"] = Object();
-
         for (const response_subject of response["subjects"]) {
-            let subject = Object();
-            interval["subjects"][response_subject["local_id"]] = subject
+            let subject = {
+                "name": response_subject["name"],
+                "types": {}
+            };
 
-            subject["name"] = response_subject["name"];
-            subject["types"] = Object();
+            interval["subjects"][response_subject["local_id"]] = subject
         }
     }
 
     // Add grades into the right interval and subject
     for (const response_grade of response["grades"]) {
-        let grade = Object();
-        grade["value"] = response_grade["value"];
-        grade["given_at"] = response_grade["given_at"];
-        grade["name"] = response_grade["collection"]["name"];
+        let grade = {
+            "value": response_grade["value"],
+            "given_at": response_grade["given_at"],
+            "name": response_grade["collection"]["name"]
+        };
 
+        // Get the certain grade type dict inside the STUDENT dict
         let type = objectTree([
             "intervals",
             response_grade["collection"]["interval_id"],
@@ -85,11 +90,13 @@ const changeStudent = async(student_id) => {
         ], STUDENT)
 
         if (!type["category_id"]) {
-            type["category_id"] = EXAM_STRINGS.includes(
+            // Pre selecting the category based on exam_strings
+            type["category_id"] = exam_strings.includes(
                 response_grade["collection"]["type"]) ? 0 : 1;
         }
 
-        type.grades = type.grades || Array();
+        // Add the grade to the type (create a new array if there isn't one)
+        type.grades = type.grades || new Array();
         type.grades.push(grade);
     }
 
@@ -97,7 +104,7 @@ const changeStudent = async(student_id) => {
     SELECTED_INTERVAL_ID = response["intervals"][0].id;
 
     // Adding default categories
-    CATEGORIES = Object();
+    CATEGORIES = new Object();
     for (const response_subject of response["subjects"]) {
         CATEGORIES[response_subject.local_id] = [
             {
@@ -167,7 +174,7 @@ const updateGrades = () => {
 
         // To keep track of the sum and count of all marks and its weight of a 
         // certain category
-        let c_sum_count_weight = {};
+        let c_sum_count_weight = new Object();
 
         for(const category of CATEGORIES[local_id]) {
             // Category container
