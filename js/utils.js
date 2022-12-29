@@ -84,3 +84,39 @@ function objectTree(keys, object) {
     return level; // return the last level/layer of the tree
 }
 
+
+// Shortcut for creating an element with a class a parent and inner text
+const htmlElement = ( tag, {
+    class_name = null,
+    parent = null,
+    text = null,
+    attributes = null,
+    children = null,
+    }) => {
+    
+    // Creating the base element
+    const element = document.createElement(tag);
+
+    // class, parent and innerText
+    if (class_name)
+        element.className = class_name;
+    if (parent) 
+        parent.appendChild(element);
+    if (text)
+       element.innerText = text;
+    
+    // attributes should be dict of attributes e.g {"id": "4", "src": "path/to"}
+    if (attributes)
+        for(const attribute in attributes) {
+            element.setAttribute(attribute, attributes[attribute]);
+        }
+    
+    // children should be an array of elements
+    if (children) {
+        for (const child of children) {
+            element.appendChild(child);
+        }
+    }
+
+    return element
+}

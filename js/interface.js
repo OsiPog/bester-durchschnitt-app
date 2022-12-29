@@ -134,102 +134,97 @@ const updateGrades = () => {
             STUDENT["intervals"][SELECTED_INTERVAL_ID]["subjects"][local_id];
         
         // Subject container
-        const div_subject = document.createElement("div");
-        root_div_grades.appendChild(div_subject);
-        div_subject.className = "subject";
-
+        const div_subject = htmlElement("div", { 
+            class_name: "subject", 
+            parent: root_div_grades
+        })
 
         // Title of the subject
-        const h2_subject = document.createElement("h2");
-        div_subject.appendChild(h2_subject)
+        const h2_subject = htmlElement("h2", {parent: div_subject})
         
-        const span_subject_title = document.createElement("span");
-        h2_subject.appendChild(span_subject_title);
-        span_subject_title.className = "title";
+        const span_subject_title = htmlElement("span", {
+            class_name: "title",
+            parent: h2_subject,
+            text: subject["name"]
+        })
 
-        // Adding 3 dots, shorten the name if the name is longer than 24 
-        // Characters
-        span_subject_title.innerText = subject["name"];
-
+        // Display the local_id if subject name is too long
         if (subject["name"].length > 16) {
             span_subject_title.innerText = local_id;
         }
         
         // Body of the subject for categories and types
-        const div_subject_body = document.createElement("div");
-        div_subject.appendChild(div_subject_body)
-        div_subject_body.className = "body";
+        const div_subject_body = htmlElement("div", {
+            class_name: "body",
+            parent: div_subject,
+        })
         
         // No types in subject means that there are no marks either
         if (Object.keys(subject["types"]).length === 0) {
-            const p_no_marks = document.createElement("p");
-            div_subject_body.appendChild(p_no_marks);
-            p_no_marks.innerText = "Keine Noten";
+            htmlElement("p", {parent: div_subject_body, text: "Keine Noten"})
             continue; // Skip to the next subject
         }
-        
-        // Categories
 
         // To keep track of the sum and count of all marks and its weight of a 
         // certain category
-        let c_sum_count_weight = Object();
+        let c_sum_count_weight = {};
 
         for(const category of CATEGORIES[local_id]) {
             // Category container
-            const div_category = document.createElement("div");
-            div_subject_body.appendChild(div_category)
-            div_category.className = "category";
-            div_category.setAttribute("c-id", category["id"]);
+            htmlElement("div", {
+                class_name: "category",
+                parent: div_subject_body,
+                // Every category div has to be able to be found later
+                attributes: {"c-id": category["id"]},
+                children: [
+                    // Title
+                    htmlElement("h3", {text: category["name"]}),
+                    // Container of types
+                    htmlElement("div", {class_name: "types"})
+                ]
+            })
 
-            // Category title
-            const h3_category = document.createElement("h3");
-            div_category.appendChild(h3_category)
-            h3_category.innerText = category["name"];
-
-            // Types container
-            const div_types = document.createElement("div");
-            div_category.appendChild(div_types);
-            div_types.className = "types";
-
-            // Create the key in the object
-            c_sum_count_weight[category["id"]] = Object();
-            c_sum_count_weight[category["id"]]["sum"] = 0;
-            c_sum_count_weight[category["id"]]["count"] = 0;
-            c_sum_count_weight[category["id"]]["weight"] = category["weight"];
+            // For later average calculation
+            c_sum_count_weight[category["id"]] = {
+                sum: 0,
+                count: 0,
+                weight: category["weight"]
+            };
         }
 
         for(const type_name in subject["types"]) {
             const type = subject["types"][type_name];
 
             // The container containing the grades of this grade type
-            const div_grade_type = document.createElement("div");
-            div_grade_type.className = "grade-type";
-
-            // Find the right types container
-            const div_types = div_subject_body.querySelector(
-                `div.category[c-id="${type.category_id}"]>div.types`);
-            
-            // Add the grade type container to the types container
-            div_types.appendChild(div_grade_type);
-
-            // Title of the grade type
-            const h4_grade_type = document.createElement("h4");
-            div_grade_type.appendChild(h4_grade_type);
-            h4_grade_type.innerText = type_name;
+            const div_grade_type = htmlElement("div", {
+                class_name: "grade-type",
+                // Adding this grade type container to the type container with
+                // The right c-id
+                parent: div_subject_body.querySelector(
+                    `div.category[c-id="${type.category_id}"]>div.types`),
+                
+                children: [
+                    // The title of the grade type
+                    htmlElement("h4", {text: type_name}),
+                ]
+            })
 
             // Container for the grades
-            const div_grades = document.createElement("div");
-            div_grade_type.appendChild(div_grades);
-            div_grades.className = "grades"; 
+            const div_grades = htmlElement("div", {
+                class_name: "grades",
+                parent: div_grade_type
+            }) 
 
             // Adding all the grades into the grade container
             for(const grade of type["grades"]) {
                 // The span containing the grade
-                const span_grade = document.createElement("span");
-                div_grades.appendChild(span_grade);
-                span_grade.className = "grade";
-                span_grade.innerText = grade["value"];
+                htmlElement("span", {
+                    class_name: "grade",
+                    parent: div_grades,
+                    text: grade["value"],
+                })
 
+                // For average calculation
                 c_sum_count_weight[type["category_id"]]["sum"] += 
                     Number(grade["value"]);
                 c_sum_count_weight[type["category_id"]]["count"]++;
@@ -273,9 +268,10 @@ const updateGrades = () => {
         average /= weights_sum;
 
         // Create a span element inside the subject heading
-        const span_average = document.createElement("span");
-        h2_subject.appendChild(span_average);
-        span_average.className = "average";
-        span_average.innerText = `∅ ${average.toFixed(2)}`;
+        htmlElement("span", {
+            class_name: "average",
+            parent: h2_subject,
+            text: `∅ ${average.toFixed(2)}`
+        })
     }
 }
