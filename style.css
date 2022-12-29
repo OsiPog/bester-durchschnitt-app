@@ -81,6 +81,7 @@ body {
     outline-style: solid;
 }
 
+
 /* index.html */
 
 #header {
@@ -343,7 +344,7 @@ body {
 
                             border-color: #4a93ec;
                             border-width: 0.1rem;
-                            border-style: solid none solid none;
+                            border-style: solid none none none;
 
                             display: flex;
                             justify-content: left;
@@ -367,6 +368,10 @@ body {
                     #grades>.subject>.body>.category>.types>.grade-type>.type-control {
                         margin-top: auto;
 
+                        border-color: #4a93ec;
+                        border-width: 0.1rem;
+                        border-style: solid none none none;
+
                         display: flex;
                         align-content: center;
                         justify-content: center;
@@ -375,6 +380,7 @@ body {
                     }
                         #grades>.subject>.body>.category>.types>.grade-type>.type-control>.icon-btn {
                             margin: 0 0.5rem 0 0.5rem;
+                            height: 1.5rem;
                         }
                 #grades>.subject>.body>.category>.weight-control {
                     display: flex;

@@ -176,6 +176,9 @@ const updateGrades = () => {
         // certain category
         let c_sum_count_weight = new Object();
 
+        // Needed later for type control
+        let category_ids = new Array();
+
         for(const category of CATEGORIES[local_id]) {
             // Category container
             htmlElement("div", {
@@ -197,6 +200,8 @@ const updateGrades = () => {
                 count: 0,
                 weight: category["weight"]
             };
+
+            category_ids.push(category["id"]);
         }
 
         for(const type_name in subject["types"]) {
@@ -220,7 +225,7 @@ const updateGrades = () => {
             const div_grades = htmlElement("div", {
                 class_name: "grades",
                 parent: div_grade_type
-            }) 
+            })
 
             // Adding all the grades into the grade container
             for(const grade of type["grades"]) {
@@ -236,7 +241,52 @@ const updateGrades = () => {
                     Number(grade["value"]);
                 c_sum_count_weight[type["category_id"]]["count"]++;
             }
-            
+
+            // Adding the type category control
+            // (but only if there's more than one category)
+            if (category_ids.length > 1) {
+                const div_type_control = htmlElement("div", {
+                    parent: div_grade_type,
+                    class_name: "type-control"
+                })
+
+                // Find the position of the type in the categories
+                // 0                        - on the left
+                // category_ids.length-1    - on the right
+                const index = category_ids.indexOf(type["category_id"]);
+
+                const createArrowButton = (x_direction) => {
+                    const arrow = htmlElement("img", {
+                        parent: div_type_control,
+                        class_name: "icon-btn",
+                        attributes: {
+                            "src": "img/arrow.svg",
+                        }
+                    })
+
+                    if (x_direction === -1) 
+                        arrow.setAttribute("style", "transform: scaleX(-1)");
+                    
+                    // Change the category of the type and update the page
+                    arrow.addEventListener("click", async() => {
+                        type["category_id"] = category_ids[index + x_direction];
+                        await suggestElementMovement(
+                            div_grade_type, 0.5, [x_direction,0])
+                        updateGrades();
+                    })
+                }
+
+                // That means there's a category "left" from the category the
+                // type is in.
+                if (index > 0)
+                    createArrowButton(-1);
+
+                // That means there's a category "right" from the category the
+                // type is in.
+                if (index < category_ids.length - 1) {
+                    createArrowButton(1);
+                }
+            } 
         }
 
         // Calculate the average
@@ -250,18 +300,18 @@ const updateGrades = () => {
 
             // Delete any category which has a count of none, thus no grades.
             if (count === 0) {
-                const div_category = div_subject_body.querySelector(
-                    `div.category[c-id="${category_id}"]`);
-                // Remove the div
-                div_category.parentElement.removeChild(div_category);
+                // const div_category = div_subject_body.querySelector(
+                //     `div.category[c-id="${category_id}"]`);
+                // // Remove the div
+                // div_category.parentElement.removeChild(div_category);
 
-                // Remove the entry from the Array
-                for(let i=0;i<CATEGORIES.length;i++) {
-                    if (category_id === CATEGORIES[i]["id"]) {
-                        CATEGORIES.splice(i, 1); // remove the element
-                        break;
-                    }
-                }
+                // // Remove the entry from the Array
+                // for(let i=0;i<CATEGORIES.length;i++) {
+                //     if (category_id === CATEGORIES[i]["id"]) {
+                //         CATEGORIES.splice(i, 1); // remove the element
+                //         break;
+                //     }
+                // }
 
                 continue; // Go to the next category
             }

@@ -120,3 +120,24 @@ const htmlElement = ( tag, {
 
     return element
 }
+
+
+// Moves an Element in a certain direction and fades it out
+const suggestElementMovement = async(element, duration, vector) => {
+    const prev_style = element.getAttribute("style");
+    element.setAttribute("style", `
+        ${prev_style};
+        transition: all;
+        transition-duration: ${duration}s;
+        transition-timing-function: ease;
+        opacity: 0;
+        transform: translate(${vector[0]*100}%, ${vector[1]*100}%)
+    `)
+
+    // Making it awaitable
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, duration*1000)
+    })
+}   
