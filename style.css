@@ -371,31 +371,36 @@ body {
                     font-size: 2rem;
 
                     padding: 0.5rem;
+                    margin-top: auto;
 
                     align-content: center;
                 }
-                #grades>.subject>.body>.category>.weighting>input {
-                    font-family: inherit;
-                    margin: 0 0.3rem 0 0.3rem;
+                    #grades>.subject>.body>.category>.weighting>input {
+                        font-family: inherit;
+                        margin: 0 0.3rem 0 0.3rem;
 
-                    text-align: center;
-                    font-size: inherit;
+                        text-align: center;
+                        font-size: inherit;
+                        color: #0057bf;
+                        font-weight: 500;
 
-                    width: 2.4rem;
-                    height: 2rem;
+                        width: 2.4rem;
+                        height: 2rem;
 
-                    padding: 0.3rem;
+                        padding: 0.3rem;
 
-                    border-radius: 1rem;
-                    border-color: #4a93ec;
-                    border-width: 0.3rem;
-                    border-style: solid;
+                        border-radius: 1rem;
+                        border-color: #4a93ec;
+                        border-width: 0.3rem;
+                        border-style: solid;
 
-                    outline: none;
-                }
-                #grades>.subject>.body>.category>.weighting>.icon-btn {
-                    height: 2rem;
+                        outline: none;
 
-                    padding: 0.5rem;
-                }
+
+                    }
+                    #grades>.subject>.body>.category>.weighting>.icon-btn {
+                        height: 2rem;
+
+                        padding: 0.5rem;
+                    }
                 
