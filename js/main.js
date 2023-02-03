@@ -2,6 +2,7 @@
 let STUDENT;
 let CATEGORIES;
 let SELECTED_INTERVAL_ID;
+let SELECTED_YEAR_ID;
 
 const init = async() => {
     // Load the config from localStorage
@@ -36,12 +37,12 @@ const init = async() => {
         return;
     }
 
-    // Get all students connected to the account
-    const students = await requestJSON("students");
+    // Get all students connected to the account and the current year
+    const me = await getJSON("me");
 
     // put students to the student selector
     select_student.innerHTML = "";
-    for(const student of students) {
+    for(const student of me.students) {
         const option = document.createElement("option");
         // Student id as value and name as displayed text
         option.innerText = student.forename + " " + student.name;
@@ -49,16 +50,27 @@ const init = async() => {
         select_student.appendChild(option);
     }
 
-    // Update SELECTED_STUDENT_ID on change of the selection
+    // Update the student on change of the selection
     select_student.addEventListener("change", async() => {
         await changeStudent(select_student.value);
     })
 
-    // student selection
+    // student selection is visible
     select_student.removeAttribute("hidden");
+
+    SELECTED_YEAR_ID = me.year.id
+
+    // Buttons for settings
+    const img_settings_btn = document.querySelector("#settings-btn");
+    img_settings_btn.addEventListener("click", Settings.open);
+    const btn_settings_close = document.querySelector("#settings-close");
+    btn_settings_close.addEventListener("click", Settings.close)
 
     // Load default student
     await changeStudent(select_student.value);
+
+    // First time of updating the settings
+    Settings.update()
 }
 
 init()
