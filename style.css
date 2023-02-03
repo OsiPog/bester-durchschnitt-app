@@ -192,6 +192,7 @@ option {
 }
 #spinner {
     position: absolute;
+    z-index: 999;
     top: 40%;
     left: 50%;
     transform: translate(-50%);
