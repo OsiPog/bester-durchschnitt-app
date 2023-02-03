@@ -16,6 +16,9 @@ const Settings = {
         }
 
         Settings.addSetting("Schuljahr", options, async(year_id) => {
+            // For a nicer view for the user
+            Settings.close()
+            
             // Updating the year on the server
             await changeYear(year_id)
 
@@ -24,6 +27,7 @@ const Settings = {
 
             // Update the settings (There will be different intervals now)
             await Settings.update()
+            Settings.open()
         })
 
         // intervals
@@ -40,7 +44,6 @@ const Settings = {
 
             updateGrades()
         })
-
     },
 
     open: () => {
