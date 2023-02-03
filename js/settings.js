@@ -16,9 +16,9 @@ const Settings = {
         }
 
         Settings.addSetting("Schuljahr", options, async(year_id) => {
-            // For a nicer view for the user
-            Settings.close()
-            
+            const div_set_body = document.querySelector("#settings>.body");
+            div_set_body.setAttribute("hidden", "")
+
             // Updating the year on the server
             await changeYear(year_id)
 
@@ -27,7 +27,8 @@ const Settings = {
 
             // Update the settings (There will be different intervals now)
             await Settings.update()
-            Settings.open()
+
+            div_set_body.removeAttribute("hidden")
         })
 
         // intervals
@@ -35,12 +36,16 @@ const Settings = {
         for (const interval_id in STUDENT.intervals) {
             options.push({
                 "label": STUDENT.intervals[interval_id].name,
-                "identifier": interval_id
+                "identifier": interval_id,
+                "pre_selected": 
+                    (Number(interval_id) === Number(SELECTED_INTERVAL_ID))
             })
         }
         Settings.addSetting("Halbjahr", options, (interval_id) => {
             // Update the global variable
             SELECTED_INTERVAL_ID = interval_id;
+            Config.set("interval", SELECTED_INTERVAL_ID)
+            Config.save()
 
             updateGrades()
         })
