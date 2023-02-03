@@ -17,13 +17,27 @@
         <div id="emphasized"></div>
         <div id="inner"></div>
     </div>
+    <div hidden id="settings">
+        <div class="body">
+            <h1>Einstellungen</h1>
+            <div class="entries">
+            </div>
+            <div class="control">
+                <div class="btn" id="settings-close">
+                    Okay
+                </div>
+            </div>
+        </div>
+        <div class="backdrop"></div>
+    </div>
     <div class="flex-con-root">
         <div id="header">
             <img class="icon" src="img/icon.svg" />
             <span class="title">bester.durchschnitt</span>
-            <select hidden id="student-selection">
+            <select id="student-selection">
                 <option></option>
             </select>
+            <img class="icon-btn" id="settings-btn" src="img/settings.svg"/>
             <a hidden class="btn" id="login"><span>Anmelden mit</span><img class="icon"
                     src="https://beste.schule/favicon.svg"></a>
         </div>
@@ -115,6 +129,7 @@
     <script src="js/oauth_client.js"></script>
     <script src="js/authenticator.js"></script>
     <script src="js/interface.js"></script>
+    <script src="js/settings.js"></script>
     <script src="js/main.js"></script>
 </body>
 
