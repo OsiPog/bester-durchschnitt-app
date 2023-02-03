@@ -107,7 +107,15 @@ const changeStudent = async(student_id) => {
     }
 
     // Assigning Globals
-    SELECTED_INTERVAL_ID = response["intervals"][0].id;
+    SELECTED_INTERVAL_ID = Config.get("interval");
+
+    let config_interval_in_intervals = false;
+    for (const interval of response["intervals"]) {
+        if (Number(SELECTED_INTERVAL_ID) === Number(interval.id)) 
+            config_interval_in_intervals = true
+    }
+    if (!config_interval_in_intervals)
+        SELECTED_INTERVAL_ID = response["intervals"][0].id
 
     // Adding default categories
     CATEGORIES = new Object();
@@ -246,7 +254,7 @@ const updateGrades = () => {
 
                 // For average calculation
                 c_sum_count_weight[type["category_id"]]["sum"] += 
-                    Number(grade["value"]);
+                    parseInt(grade["value"]);
                 c_sum_count_weight[type["category_id"]]["count"]++;
             }
 
