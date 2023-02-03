@@ -1,4 +1,4 @@
-# <img src="img/icon.svg" style="height:1.4em"> bester.durchschnitt
+# <img src="img/icon.svg" style="height:1.4em;transform:translateY(25%)"> bester.durchschnitt
 
 A web-app that displays average marks from https://beste.schule/
 
