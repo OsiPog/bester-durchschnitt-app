@@ -32,12 +32,12 @@ function vigenere(string, key_string, decrypt = false) {
 // that request is awaited and the result of the request is converted to a JSON
 // this conversion is awaited too.
 // Returns the answer to the request as JSON
-const requestJSON = async(route) => {
+const getJSON = async(route) => {
     let response;
     try {
         response = await fetch(`https://beste.schule/api/${route}`, {
             headers: {
-                Authorization: `Bearer ${Authenticator.access_token}`
+                "Authorization": `Bearer ${Authenticator.access_token}`
             }
         });
     }
@@ -50,6 +50,21 @@ const requestJSON = async(route) => {
 
     // Return only the data attribute because meta is irrelevant
     return (await response.json()).data
+}
+
+const postJSON = async(route, json) => {
+    // Send the request
+    let response = await (await fetch(
+        `https://beste.schule/api/${route}`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${Authenticator.access_token}`,
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify(json)
+    })).json()
+
+    return response;
 }
 
 // Toggle visibility of loading spinner
@@ -140,4 +155,4 @@ const suggestElementMovement = async(element, duration, vector) => {
             resolve();
         }, duration*1000)
     })
-}   
+}

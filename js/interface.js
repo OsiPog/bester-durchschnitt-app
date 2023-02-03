@@ -1,3 +1,9 @@
+const changeYear = async(year_id) => {
+    await postJSON("years/current", {"id": year_id});
+    SELECTED_YEAR_ID = year_id;
+}
+
+
 // Update the loaded GRADES of the student and the global variable containing
 // the student id
 const changeStudent = async(student_id) => {
@@ -8,7 +14,7 @@ const changeStudent = async(student_id) => {
     setLoading(true);
     
     // Get all grades of the student
-    const response = await requestJSON(
+    const response = await getJSON(
         `students/${student_id}?include=grades,subjects,intervals`);
     
     // Convert the response into a usable dict
@@ -180,6 +186,7 @@ const updateGrades = () => {
         let category_ids = new Array();
 
         for(const category of CATEGORIES[local_id]) {
+
             // Category container
             htmlElement("div", {
                 class_name: "category",
@@ -194,14 +201,15 @@ const updateGrades = () => {
                 ]
             })
 
+            // type control
+            category_ids.push(category["id"]);
+
             // For later average calculation
             c_sum_count_weight[category["id"]] = {
                 sum: 0,
                 count: 0,
                 weight: category["weight"]
             };
-
-            category_ids.push(category["id"]);
         }
 
         for(const type_name in subject["types"]) {
