@@ -62,6 +62,9 @@ const init = async() => {
 
     // Buttons for settings
     const img_settings_btn = document.querySelector("#settings-btn");
+    // Show the button
+    img_settings_btn.removeAttribute("hidden")
+    // open settings on click
     img_settings_btn.addEventListener("click", Settings.open);
     const btn_settings_close = document.querySelector("#settings-close");
     btn_settings_close.addEventListener("click", Settings.close)
