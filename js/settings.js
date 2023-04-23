@@ -76,6 +76,50 @@ const Settings = {
             Settings.selected.using_percent = (state === "percent")
             Config.set("using_percent", Settings.selected.using_percent)
 
+            // Conversion from weights to percent or vice versa
+            for (const local_id in CATEGORIES) {
+                // Get the sum
+                let sum = 0
+                for (const category of CATEGORIES[local_id]) {
+                    sum += Number(category.weight)
+                }
+
+                // for conversion percent-weights
+                let i = 2
+                let all_integers;
+
+                do {
+                    all_integers = true
+                    // Convert
+                    for (const category of CATEGORIES[local_id]) {
+                        if (i === 2) {
+                            category.weight = (Number(category.weight)/sum)
+                        }
+
+                        // weights to percent
+                        if (Settings.selected.using_percent) {
+                            category.weight = Math.round(category.weight*100)
+                        }
+                        // percent to weights
+                        else {
+                            // Multiply all weights by the same integer until they're all integers
+                            category.weight *=  i
+                            if ((Math.abs(category.weight - Math.round(category.weight)) < 0.01)
+                                || (i === 100)) {
+                                category.weight = Math.round(category.weight)
+                            }
+                            else {
+                                category.weight /= i
+                                all_integers = false
+                            }
+                        }
+                    }
+                    i++;
+                    if (i === 100) break
+                } while(!all_integers)
+
+            }
+
             updateGrades()
         })
 

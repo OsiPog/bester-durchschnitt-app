@@ -462,8 +462,6 @@ const updateGrades = () => {
                     const div_weight_control = divs_category[0].querySelector(".weight-control")
                     div_weight_control.parentElement.removeChild(div_weight_control)
                 }
-
-                continue; // Go to the next category
             }
 
             if (weight === 0) {
