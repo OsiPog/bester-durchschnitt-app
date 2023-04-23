@@ -107,6 +107,7 @@ const htmlElement = ( tag, {
     text = null,
     attributes = null,
     children = null,
+    event_listeners = null,
     }) => {
     
     // Creating the base element
@@ -123,7 +124,9 @@ const htmlElement = ( tag, {
     // attributes should be dict of attributes e.g {"id": "4", "src": "path/to"}
     if (attributes)
         for(const attribute in attributes) {
-            element.setAttribute(attribute, attributes[attribute]);
+            // On a value like false or undefined don't set the attribute
+            if (attributes[attribute])
+                element.setAttribute(attribute, attributes[attribute]);
         }
     
     // children should be an array of elements
@@ -132,6 +135,15 @@ const htmlElement = ( tag, {
             element.appendChild(child);
         }
     }
+
+    // event_listeners should be a dict e.g ("click": (el) => {})
+    if (event_listeners) {
+        for (const event in event_listeners) {
+            console.log(event_listeners)
+            element.addEventListener(event, () => {event_listeners[event](element)})
+        }
+    }
+
 
     return element
 }
