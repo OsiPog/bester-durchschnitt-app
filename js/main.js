@@ -7,6 +7,8 @@ const init = async() => {
     Config.load();
     // Initialized
     OAuthClient.init();
+    // Settings
+    Settings.init()
 
     // Check the parameters for any action
     if (URLParameterHandler.check() === "STOP") return;

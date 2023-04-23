@@ -219,6 +219,8 @@ const updateGrades = () => {
         // No types in subject means that there are no marks either
         if (Object.keys(subject["types"]).length === 0) {
             htmlElement("p", {parent: div_subject_body, text: "Keine Noten"})
+            if (Settings.selected.hide_gradeless)
+                div_subject.parentElement.removeChild(div_subject)
             continue; // Skip to the next subject
         }
 

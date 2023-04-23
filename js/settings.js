@@ -1,8 +1,14 @@
 const Settings = {
     selected: {
-        //year_id,
-        //interval_id,
-        using_percent: true,
+    },
+
+    init: () => {
+        Settings.selected = {
+            year_id: -1, // set/get later
+            interval_id: -1, // set/get later
+            using_percent: (Config.get("using_percent") === "true"),
+            hide_gradeless: (Config.get("hide_gradeless") === "true"), 
+        }
     },
 
     update: async() => {
@@ -50,7 +56,6 @@ const Settings = {
             // Update the global variable
             Settings.selected.interval_id = interval_id;
             Config.set("interval", Settings.selected.interval_id)
-            Config.save()
 
             updateGrades()
         })
@@ -59,17 +64,36 @@ const Settings = {
         Settings.addSetting("Wichtungsart", [
             {
                 "label": "Prozente",
-                "identifier": true,
+                "identifier": "percent",
                 "pre_selected": Settings.selected.using_percent
             },
             {
                 "label": "Wichtungen",
-                "identifier": false,
+                "identifier": "weights",
                 "pre_selected": !Settings.selected.using_percent
             },
         ], (state) => {
-            Settings.selected.using_percent = state
-            // TODO: Logic for category weights translation to percent or weights
+            Settings.selected.using_percent = (state === "percent")
+            Config.set("using_percent", Settings.selected.using_percent)
+
+            updateGrades()
+        })
+
+        // hide subjects with no grades
+        Settings.addSetting("Fächer ohne Noten", [
+            {
+                "label": "ausblenden",
+                "identifier": "hide",
+                "pre_selected": Settings.selected.hide_gradeless
+            },
+            {
+                "label": "anzeigen",
+                "identifier": "show",
+                "pre_selected": !Settings.selected.hide_gradeless
+            },
+        ], (state) => {
+            Settings.selected.hide_gradeless = (state === "hide")
+            Config.set("hide_gradeless", Settings.selected.hide_gradeless)
 
             updateGrades()
         })
@@ -94,6 +118,9 @@ const Settings = {
 
         // Fading out
         div_settings.setAttribute("style", "opacity:0");
+
+        // Save settings
+        Config.save()
 
         // Short moment for animation
         setTimeout(() => {
