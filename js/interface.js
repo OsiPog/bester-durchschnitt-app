@@ -443,11 +443,13 @@ const updateGrades = () => {
         // Calculate the average
         let average = 0;
         let weights_sum = 0;
+        let ignore_weighting = false
 
         for(const category_id in c_sum_count_weight) {
             const weight = c_sum_count_weight[category_id]["weight"];
             const sum = c_sum_count_weight[category_id]["sum"];
             const count = c_sum_count_weight[category_id]["count"];
+            if (local_id === "SPO") console.log(weight, sum, count)
 
             // Delete any category which has a count of none, thus no grades.
             if (count === 0) {
@@ -459,18 +461,19 @@ const updateGrades = () => {
                 // If only one category is left, remove the weight control
                 const divs_category = div_subject_body.querySelectorAll("div.category")
                 if (divs_category.length == 1) {
+                    ignore_weighting = true
                     const div_weight_control = divs_category[0].querySelector(".weight-control")
                     div_weight_control.parentElement.removeChild(div_weight_control)
                 }
+            }
+            else {
+                average += weight * (sum/count);
+                weights_sum += weight;
             }
 
             if (weight === 0) {
                 warnings.push({type: "warning", text: "Manchen Kategorien ist die Wichtung 0 zugeordnet."})
             }
-            
-            average += weight * (sum/count);
-
-            weights_sum += weight;
         }
 
         // Divide all by the sum of all weights
@@ -479,7 +482,7 @@ const updateGrades = () => {
         average_text = average.toFixed(2)
         if (average_text === "NaN") average_text = "Fehler"
 
-        if ((Settings.selected.using_percent) && (weights_sum !== 100)) {
+        if ((Settings.selected.using_percent) && (weights_sum !== 100) && !ignore_weighting) {
             average_text = "Fehler"
             warnings.push({type: "error", text: "Die Wichtungen ergeben zusammen nicht 100%!"})
         }
