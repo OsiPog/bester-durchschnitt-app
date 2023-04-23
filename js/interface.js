@@ -134,12 +134,50 @@ const changeStudent = async(student_id) => {
         ]
     }
 
+    // Apply any patches from config
+    for(const key in Config._config) {
+        if(key.match(/^patch\//g)) {
+            const patch = Config.formatPatch(key)
+            console.log(patch, key)
+            if ((Number(patch.year_id) !== Number(SELECTED_YEAR_ID)) 
+                || (Number(student_id) !== Number(STUDENT["id"]))) continue;
+
+            const interval_config = STUDENT["intervals"][patch.interval_id];
+            if (!interval_config) continue // shouldn't happen but who knows ¯\_(ツ)_/¯
+            
+            // Different logic for each different patch type
+            switch(patch.type) {
+                case "grade_type":
+                    let to_be_patched = interval_config;
+                    for (const segment of patch.route.slice(0,patch.route.length-1)) {
+                        to_be_patched = to_be_patched[segment]
+                    }
+                    // If the patch is applied already (if the patch's value is the default
+                    // value) the patch can be deleted from config
+                    if (to_be_patched[patch.route.at(-1)] === patch.value) {
+                        Config._config.splice(
+                            Config._config.indexOf(key),1
+                        )
+                    }
+                    else {
+                        to_be_patched[patch.route.at(-1)] = patch.value
+                    }
+                    break;
+            }
+
+            Config.save()
+            
+        }
+    }
+
     setLoading(false);
 
     // Display the grades according to the dict
     updateGrades();
 }
 
+
+// Update the grade container
 const updateGrades = () => {
     // The base container for all subject
     const root_div_grades = document.querySelector("#grades");
@@ -269,7 +307,7 @@ const updateGrades = () => {
                 // Find the position of the type in the categories
                 // 0                        - on the left
                 // category_ids.length-1    - on the right
-                const index = category_ids.indexOf(type["category_id"]);
+                const index = category_ids.indexOf(Number(type["category_id"]));
 
                 const createArrowButton = (x_direction) => {
                     const arrow = htmlElement("img", {
@@ -286,6 +324,11 @@ const updateGrades = () => {
                     // Change the category of the type and update the page
                     arrow.addEventListener("click", async() => {
                         type["category_id"] = category_ids[index + x_direction];
+                        // Save this change in the config
+                        Config.patch("grade_type",
+                            `subjects/${local_id}/types/${type_name}/category_id`, 
+                            type["category_id"])
+
                         await suggestElementMovement(
                             div_grade_type, 0.5, [x_direction,0])
                         updateGrades();
