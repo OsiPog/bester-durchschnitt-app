@@ -33,6 +33,8 @@ const URLParameterHandler = {
             if (params.includes("style")) {
                 const sample_subject = document.querySelector("#sample-subject-1");
                 sample_subject.removeAttribute("hidden");
+                const div_overall_average = document.querySelector("#overall-average");
+                div_overall_average.removeAttribute("hidden");
                 return "STOP";
             }
         }

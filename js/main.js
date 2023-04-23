@@ -79,6 +79,10 @@ const init = async() => {
         return false;
     })
 
+    // Overall average div
+    const div_overall_average = document.querySelector("#overall-average");
+    div_overall_average.removeAttribute("hidden")
+
     // Load default student
     await changeStudent(select_student.value);
 

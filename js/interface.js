@@ -196,6 +196,10 @@ const updateGrades = () => {
     // Clear the whole div
     root_div_grades.innerHTML = "";
 
+    // Overall average
+    let overall_average_count = 0;
+    let overall_average_sum = 0;
+
     // Go through all subjects in the selected interval
     for(const local_id in 
             STUDENT["intervals"][Settings.selected.interval_id]["subjects"]) {
@@ -449,7 +453,6 @@ const updateGrades = () => {
             const weight = c_sum_count_weight[category_id]["weight"];
             const sum = c_sum_count_weight[category_id]["sum"];
             const count = c_sum_count_weight[category_id]["count"];
-            if (local_id === "SPO") console.log(weight, sum, count)
 
             // Delete any category which has a count of none, thus no grades.
             if (count === 0) {
@@ -480,7 +483,8 @@ const updateGrades = () => {
         average /= weights_sum;
         
         average_text = average.toFixed(2)
-        if (average_text === "NaN") average_text = "Fehler"
+        if (average_text === "NaN") 
+            average_text = "Fehler"
 
         if ((Settings.selected.using_percent) && (weights_sum !== 100) && !ignore_weighting) {
             average_text = "Fehler"
@@ -493,6 +497,12 @@ const updateGrades = () => {
             parent: h2_subject,
             text: `∅ ${average_text}`
         })
+
+        // Contribute to overall average
+        if (average_text !== "Fehler") {
+            overall_average_count += 1;
+            overall_average_sum += Math.round(average)
+        }
 
         // Display warnings
         const div_alerts = htmlElement("div", {
@@ -508,4 +518,8 @@ const updateGrades = () => {
             })
         }
     }
+
+    // Display overall average
+    const span_overall_average = document.querySelector("#overall-average>.average");
+    span_overall_average.innerText = `∅ ${(overall_average_sum/overall_average_count).toFixed(2)}`
 }
