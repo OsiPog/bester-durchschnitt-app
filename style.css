@@ -465,6 +465,8 @@ option {
 
         box-shadow: 0 0 3rem #000000A0;
 
+        padding: 1rem;
+
         border-radius: 0.5rem;
         border-color: #0057bf;
         border-style: solid;
@@ -481,13 +483,13 @@ option {
         flex-direction: column;
     
         align-content: center;
-        text-align: center;
     
         background-color: white;
     }
         #settings>.body>h1 {
             font-weight: 500;
             font-size: 2rem;
+            text-align: center;
 
             margin: 0.5rem;
 
