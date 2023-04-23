@@ -386,9 +386,11 @@ const updateGrades = () => {
                 })
 
                 // For average calculation
-                c_sum_count_weight[type["category_id"]]["sum"] += 
-                    parseInt(grade["value"]);
-                c_sum_count_weight[type["category_id"]]["count"]++;
+                if (String(parseInt(grade["value"])) !== "NaN") {
+                    c_sum_count_weight[type["category_id"]]["sum"] += 
+                        parseInt(grade["value"]);
+                    c_sum_count_weight[type["category_id"]]["count"]++;
+                }
             }
 
             // Adding the type category control
@@ -521,5 +523,12 @@ const updateGrades = () => {
 
     // Display overall average
     const span_overall_average = document.querySelector("#overall-average>.average");
-    span_overall_average.innerText = `∅ ${(overall_average_sum/overall_average_count).toFixed(2)}`
+    let overall_average = overall_average_sum/overall_average_count;
+    if (!overall_average) {
+        overall_average = "Fehler"
+    }
+    else {
+        overall_average = overall_average.toFixed(2)
+    }
+    span_overall_average.innerText = `∅ ${overall_average}`
 }
