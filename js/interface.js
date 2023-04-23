@@ -138,7 +138,7 @@ const changeStudent = async(student_id) => {
     for(const key in Config._config) {
         if(key.match(/^patch\//g)) {
             const patch = Config.formatPatch(key)
-            console.log(patch, key)
+
             if ((Number(patch.year_id) !== Number(SELECTED_YEAR_ID)) 
                 || (Number(student_id) !== Number(STUDENT["id"]))) continue;
 
@@ -154,10 +154,8 @@ const changeStudent = async(student_id) => {
                     }
                     // If the patch is applied already (if the patch's value is the default
                     // value) the patch can be deleted from config
-                    if (to_be_patched[patch.route.at(-1)] === patch.value) {
-                        Config._config.splice(
-                            Config._config.indexOf(key),1
-                        )
+                    if (Number(to_be_patched[patch.route.at(-1)]) === Number(patch.value)) {
+                        delete Config._config[key]
                     }
                     else {
                         to_be_patched[patch.route.at(-1)] = patch.value
