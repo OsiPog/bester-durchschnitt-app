@@ -28,6 +28,7 @@ const URLParameterHandler = {
         const parameters = URLParameterHandler.getAll();
 
         // Check lastly because it could return "STOP"
+        // assigned not compared
         if (params = parameters["debug"]) {
             if (params.includes("style")) {
                 const sample_subject = document.querySelector("#sample-subject-1");
