@@ -6,8 +6,8 @@ const Settings = {
         Settings.selected = {
             year_id: -1, // set/get later
             interval_id: -1, // set/get later
-            using_percent: (Config.get("using_percent") === "true"),
-            hide_gradeless: (Config.get("hide_gradeless") === "true"), 
+            using_percent: (val = Config.get("using_percent"))? (val === "true") : true,
+            hide_gradeless: (val = Config.get("hide_gradeless"))? (val === "true") : false, 
         }
     },
 
