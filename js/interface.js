@@ -124,12 +124,12 @@ const changeStudent = async(student_id) => {
             {
                 id: 0,
                 name: "KA/Klausur",
-                weight: 1,
+                weight: 50,
             },
             {
                 id: 1,
                 name: "Sonstige",
-                weight: 1,
+                weight: 50,
             }
         ]
     }
@@ -161,6 +161,19 @@ const changeStudent = async(student_id) => {
                         to_be_patched[patch.route.at(-1)] = patch.value
                     }
                     break;
+                case "category":
+                    const [
+                        local_id,
+                        category_id,
+                        attribute,
+                    ] = patch.route
+
+                    for (const category of CATEGORIES[local_id]) {
+                        if (Number(category["id"]) === Number(category_id)) {
+                            category[attribute] = Number(patch.value)
+                            break
+                        }
+                    }
             }
 
             Config.save()
@@ -228,26 +241,104 @@ const updateGrades = () => {
         // certain category
         let c_sum_count_weight = new Object();
 
+        // Warnings will be displayed below the subject
+        let warnings = []
+
         // Needed later for type control
         let category_ids = new Array();
 
         for(const category of CATEGORIES[local_id]) {
+
+            const saveChange = () => {
+                Config.patch("category", `${local_id}/${category["id"]}/weight`, category.weight)
+                Config.save()
+            }
 
             // Category container
             htmlElement("div", {
                 class_name: "category",
                 parent: div_subject_body,
                 // Every category div has to be able to be found later
-                attributes: {"c-id": category["id"]},
+                attributes: {"c-id": String(category["id"])},
                 children: [
                     // Title
                     htmlElement("h3", {text: category["name"]}),
                     // Container of types
-                    htmlElement("div", {class_name: "types"})
+                    htmlElement("div", {class_name: "types"}),
+                    // Weight control
+                    htmlElement("div", {
+                        class_name: "weight-control",
+                        children: [
+                            htmlElement("img", {
+                                class_name: "icon-btn",
+                                attributes: {
+                                    "src": "img/increment.svg",
+                                },
+                                event_listeners: {
+                                    "click": () => {
+                                        category.weight += 10**(Settings.selected.using_percent)
+                                        category.weight = clamp(0,category.weight,99)
+                                        if (Settings.selected.using_percent && (category.weight === 11)) {
+                                            category.weight = 10;
+                                        }
+                                        saveChange()
+                                        updateGrades()
+                                    }
+                                }
+                            }),
+                            htmlElement("input", {
+                                attributes: {
+                                    "value": String(category.weight),
+                                    "maxlength": 2,
+                                },
+                                event_listeners: {
+                                    "change": (el) => {
+                                        if (String(Number(el.value)) !== "NaN") {
+                                            category.weight = clamp(0,Number(el.value),99)
+                                        }
+                                        else if (el.value === "") {
+                                            category.weight = 0
+                                        }
+                                        else {
+                                            el.value = category.weight
+                                            return
+                                        }
+                                        saveChange()
+                                        updateGrades()
+                                    }
+                                }
+                            }),
+                            htmlElement("img", {
+                                class_name: "icon-btn",
+                                attributes: {
+                                    "src": "img/decrement.svg",
+                                },
+                                event_listeners: {
+                                    "click": () => {
+                                        category.weight -= 10**(Settings.selected.using_percent)
+                                        category.weight = clamp(0,category.weight,99)
+                                        if ((category.weight === 0) && Settings.selected.using_percent) 
+                                            category.weight = 1
+                                        if (Settings.selected.using_percent && (category.weight === 89)) {
+                                            category.weight = 90;
+                                        }
+                                        saveChange()
+                                        updateGrades()
+                                    }
+                                }
+                            }),
+                            htmlElement("span", {
+                                text: "(%)",
+                                attributes: {
+                                    "hidden": !Settings.selected.using_percent
+                                }
+                            })
+                        ]
+                    })
                 ]
             })
 
-            // type control
+            // for type control
             category_ids.push(category["id"]);
 
             // For later average calculation
@@ -318,6 +409,7 @@ const updateGrades = () => {
                         }
                     })
 
+                    // Mirror arrow svg
                     if (x_direction === -1) 
                         arrow.setAttribute("style", "transform: scaleX(-1)");
                     
@@ -359,20 +451,23 @@ const updateGrades = () => {
 
             // Delete any category which has a count of none, thus no grades.
             if (count === 0) {
-                // const div_category = div_subject_body.querySelector(
-                //     `div.category[c-id="${category_id}"]`);
-                // // Remove the div
-                // div_category.parentElement.removeChild(div_category);
-
-                // // Remove the entry from the Array
-                // for(let i=0;i<CATEGORIES.length;i++) {
-                //     if (category_id === CATEGORIES[i]["id"]) {
-                //         CATEGORIES.splice(i, 1); // remove the element
-                //         break;
-                //     }
-                // }
+                const div_category = div_subject_body.querySelector(
+                    `div.category[c-id="${category_id}"]`);
+                // Remove the div
+                div_category.parentElement.removeChild(div_category);
+                
+                // If only one category is left, remove the weight control
+                const divs_category = div_subject_body.querySelectorAll("div.category")
+                if (divs_category.length == 1) {
+                    const div_weight_control = divs_category[0].querySelector(".weight-control")
+                    div_weight_control.parentElement.removeChild(div_weight_control)
+                }
 
                 continue; // Go to the next category
+            }
+
+            if (weight === 0) {
+                warnings.push({type: "warning", text: "Manchen Kategorien ist die Wichtung 0 zugeordnet."})
             }
             
             average += weight * (sum/count);
@@ -386,11 +481,30 @@ const updateGrades = () => {
         average_text = average.toFixed(2)
         if (average_text === "NaN") average_text = "Fehler"
 
+        if ((Settings.selected.using_percent) && (weights_sum !== 100)) {
+            average_text = "Fehler"
+            warnings.push({type: "error", text: "Die Wichtungen ergeben zusammen nicht 100%!"})
+        }
+
         // Create a span element inside the subject heading
         htmlElement("span", {
             class_name: "average",
             parent: h2_subject,
             text: `∅ ${average_text}`
         })
+
+        // Display warnings
+        const div_alerts = htmlElement("div", {
+            parent: div_subject,
+            class_name: "alerts"
+        })
+
+        for (const warning of warnings) {
+            htmlElement("div", {
+                parent: div_alerts,
+                class_name: warning.type,
+                text: warning.text
+            })
+        }
     }
 }
