@@ -25,7 +25,7 @@ const Config = {
         // Remove the trailing comma
         decrypted = decrypted.slice(0, decrypted.length -1);
         
-        localStorage.setItem("bester-durchschnitt-app", 
+        localStorage.setItem("bester-durchschnitt-app",
             vigenere(decrypted, "bester-durchschnitt"));
     },
 
@@ -36,5 +36,33 @@ const Config = {
     set: (key, value) => {
         Config._config[key] = value;
         Config.save();
+    },
+
+    // Creates a patch 
+    // "patch/{patch_type}/{student_id}/{year_id}/{interval_id}/{patch_route}"
+    patch: (type, route, value) => {
+        console.log(route, value)
+        let key;
+        // relative path
+        if(route.at(0) !== "/") {
+            key = `patch/${type}/${STUDENT.id}/${SELECTED_YEAR_ID}/${SELECTED_INTERVAL_ID}/${route}`
+        }
+        else key = `patch${route}`;
+
+        Config.set(key, value);
+    },
+
+    formatPatch: (patch) => {
+        const path = patch.split("/")
+
+        if (path[0] !== "patch") throw "Passed string is not a patch"
+        return {
+            type: path[1],
+            student_id: path[2],
+            year_id: path[3],
+            interval_id: path[4],
+            route: path.slice(5,path.length),
+            value: Config.get(patch)
+        }
     }
 }
