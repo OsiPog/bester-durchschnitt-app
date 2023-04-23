@@ -1,8 +1,6 @@
 // Globals
 let STUDENT;
 let CATEGORIES;
-let SELECTED_INTERVAL_ID;
-let SELECTED_YEAR_ID;
 
 const init = async() => {
     // Load the config from localStorage
@@ -58,7 +56,7 @@ const init = async() => {
     // student selection is visible
     select_student.removeAttribute("hidden");
 
-    SELECTED_YEAR_ID = me.year.id
+    Settings.selected.year_id = me.year.id
 
     // Buttons for settings
     const img_settings_btn = document.querySelector("#settings-btn");

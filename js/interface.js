@@ -1,6 +1,6 @@
 const changeYear = async(year_id) => {
     await postJSON("years/current", {"id": year_id});
-    SELECTED_YEAR_ID = year_id;
+    Settings.selected.year_id = year_id;
 }
 
 
@@ -107,15 +107,15 @@ const changeStudent = async(student_id) => {
     }
 
     // Assigning Globals
-    SELECTED_INTERVAL_ID = Config.get("interval");
+    Settings.selected.interval_id = Config.get("interval");
 
     let config_interval_in_intervals = false;
     for (const interval of response["intervals"]) {
-        if (Number(SELECTED_INTERVAL_ID) === Number(interval.id)) 
+        if (Number(Settings.selected.interval_id) === Number(interval.id)) 
             config_interval_in_intervals = true
     }
     if (!config_interval_in_intervals)
-        SELECTED_INTERVAL_ID = response["intervals"][0].id
+        Settings.selected.interval_id = response["intervals"][0].id
 
     // Adding default categories
     CATEGORIES = new Object();
@@ -139,7 +139,7 @@ const changeStudent = async(student_id) => {
         if(key.match(/^patch\//g)) {
             const patch = Config.formatPatch(key)
 
-            if ((Number(patch.year_id) !== Number(SELECTED_YEAR_ID)) 
+            if ((Number(patch.year_id) !== Number(Settings.selected.year_id)) 
                 || (Number(student_id) !== Number(STUDENT["id"]))) continue;
 
             const interval_config = STUDENT["intervals"][patch.interval_id];
@@ -185,10 +185,10 @@ const updateGrades = () => {
 
     // Go through all subjects in the selected interval
     for(const local_id in 
-            STUDENT["intervals"][SELECTED_INTERVAL_ID]["subjects"]) {
+            STUDENT["intervals"][Settings.selected.interval_id]["subjects"]) {
 
         const subject = 
-            STUDENT["intervals"][SELECTED_INTERVAL_ID]["subjects"][local_id];
+            STUDENT["intervals"][Settings.selected.interval_id]["subjects"][local_id];
         
         // Subject container
         const div_subject = htmlElement("div", { 
@@ -380,12 +380,15 @@ const updateGrades = () => {
 
         // Divide all by the sum of all weights
         average /= weights_sum;
+        
+        average_text = average.toFixed(2)
+        if (average_text === "NaN") average_text = "Fehler"
 
         // Create a span element inside the subject heading
         htmlElement("span", {
             class_name: "average",
             parent: h2_subject,
-            text: `∅ ${average.toFixed(2)}`
+            text: `∅ ${average_text}`
         })
     }
 }

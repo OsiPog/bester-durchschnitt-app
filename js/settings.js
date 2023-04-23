@@ -1,4 +1,9 @@
 const Settings = {
+    selected: {
+        //year_id,
+        //interval_id,
+        using_percent: true,
+    },
 
     update: async() => {
         const div_entries = document.querySelector("#settings>.body>.entries");
@@ -11,7 +16,7 @@ const Settings = {
             options.push({
                 "label": year.name,
                 "identifier": year.id,
-                "pre_selected": (Number(SELECTED_YEAR_ID) === Number(year.id))
+                "pre_selected": (Number(Settings.selected.year_id) === Number(year.id))
             })
         }
 
@@ -38,14 +43,33 @@ const Settings = {
                 "label": STUDENT.intervals[interval_id].name,
                 "identifier": interval_id,
                 "pre_selected": 
-                    (Number(interval_id) === Number(SELECTED_INTERVAL_ID))
+                    (Number(interval_id) === Number(Settings.selected.interval_id))
             })
         }
         Settings.addSetting("Halbjahr", options, (interval_id) => {
             // Update the global variable
-            SELECTED_INTERVAL_ID = interval_id;
-            Config.set("interval", SELECTED_INTERVAL_ID)
+            Settings.selected.interval_id = interval_id;
+            Config.set("interval", Settings.selected.interval_id)
             Config.save()
+
+            updateGrades()
+        })
+
+        // using percents or not
+        Settings.addSetting("Wichtungsart", [
+            {
+                "label": "Prozente",
+                "identifier": true,
+                "pre_selected": Settings.selected.using_percent
+            },
+            {
+                "label": "Wichtungen",
+                "identifier": false,
+                "pre_selected": !Settings.selected.using_percent
+            },
+        ], (state) => {
+            Settings.selected.using_percent = state
+            // TODO: Logic for category weights translation to percent or weights
 
             updateGrades()
         })

@@ -45,7 +45,7 @@ const Config = {
         let key;
         // relative path
         if(route.at(0) !== "/") {
-            key = `patch/${type}/${STUDENT.id}/${SELECTED_YEAR_ID}/${SELECTED_INTERVAL_ID}/${route}`
+            key = `patch/${type}/${STUDENT.id}/${Settings.selected.year_id}/${Settings.selected.interval_id}/${route}`
         }
         else key = `patch${route}`;
 
