@@ -139,7 +139,6 @@ const htmlElement = ( tag, {
     // event_listeners should be a dict e.g ("click": (el) => {})
     if (event_listeners) {
         for (const event in event_listeners) {
-            console.log(event_listeners)
             element.addEventListener(event, () => {event_listeners[event](element)})
         }
     }
@@ -168,3 +167,6 @@ const suggestElementMovement = async(element, duration, vector) => {
         }, duration*1000)
     })
 }
+
+// Clamp number between two values with the following line:
+const clamp = (min, num, max) => Math.min(Math.max(num, min), max);

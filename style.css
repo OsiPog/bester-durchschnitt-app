@@ -444,6 +444,11 @@ option {
                     #grades>.subject>.body>.category>.weight-control>.icon-btn {
                         height: 2rem;
                     }
+                    #grades>.subject>.body>.category>.weight-control>span {
+                        margin-left:1rem;
+                        color:#0057bf;
+                        font-weight:bold;
+                    }
 
 #settings {
     position: absolute;
