@@ -231,11 +231,38 @@ option {
         animation: 2.5s linear infinite spinner-emph-pulse;
     }
 
+
+#overall-average {
+    z-index:1;
+    padding: 0.8rem;
+    box-shadow: 0 0.009rem 0.55rem black;
+    
+}
+    #overall-average>.label {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    #overall-average>.average {
+        font-weight: bold;
+
+        background-color: #4a93ec;
+        
+        padding: 0.0rem 0.5rem 0 0.5rem;
+        margin-left: 1rem;
+
+        color: white;
+        font-size: 1.4rem;
+
+        border-radius: 1rem;
+    }
+
 #grades {
     padding: 1rem;
 
     display: flex;
     flex-direction: column;
+
+    position: relative;
 
     overflow: scroll;
     max-height: 90vh;

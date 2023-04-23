@@ -43,6 +43,9 @@
             <a hidden class="btn" id="login"><span>Anmelden mit</span><img class="icon"
                     src="https://beste.schule/favicon.svg"></a>
         </div>
+        <div hidden id="overall-average">
+            <span class="label">Gesamtdurchschnitt</span> <span class="average">∅ 1.23</span>
+        </div>
         <div id="grades">
             <div hidden class="subject" id="sample-subject-1">
                 <h2><span class="title">Sample Subject</span> <span class="average">∅ 1.23</span></h2>
@@ -118,7 +121,84 @@
                     </div>
                 </div>
                 <div class="alerts">
-                    <div>Die Wichtungen ergeben zusammen nicht 100%!</div>
+                    <div class="error">Die Wichtungen ergeben zusammen nicht 100%!</div>
+                </div>
+            </div>
+            <div class="subject" id="sample-subject-1">
+                <h2><span class="title">Sample Subject</span> <span class="average">∅ 1.23</span></h2>
+                <div class="body">
+                    <div class="category">
+                        <h3>Sonstige</h3>
+                        <div class="types">
+                            <div class="grade-type">
+                                <h4>SonstigeNoten</h4>
+                                <div class="grades">
+                                    <span class="grade">3</span>
+                                    <span class="grade">1</span>
+                                    <span class="grade">2</span>
+                                    <span class="grade">2</span>
+                                    <span class="grade">2</span>
+                                    <span class="grade">2</span>
+                                    <span class="grade">2</span>
+                                </div>
+                                <div class="type-control">
+                                    <img class="icon-btn" src="img/arrow.svg" style="transform: scaleX(-1)">
+                                    <img class="icon-btn" src="img/arrow.svg">
+                                </div>
+                            </div>
+                            <div class="grade-type">
+                                <h4>Mündlich</h4>
+                                <div class="grades">
+                                    <span class="grade">2</span>
+                                </div>
+                                <div class="type-control">
+                                    <img class="icon-btn" src="img/arrow.svg" style="transform: scaleX(-1)">
+                                    <img class="icon-btn" src="img/arrow.svg">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="weight-control">
+                            <img class="icon-btn" src="img/increment.svg">
+                            <input value="40" maxlength="2"/> 
+                            <img class="icon-btn" src="img/decrement.svg">
+                            <span>(%)</span>
+                        </div>
+                    </div>
+                    <div class="category">
+                        <h3>KA/Klausur</h3>
+                        <div class="types">
+                            <div class="grade-type">
+                                <h4>Klassenarbeit</h4>
+                                <div class="grades">
+                                    <span class="grade">1</span>
+                                    <span class="grade">2</span>
+                                </div>
+                                <div class="type-control">
+                                    <img class="icon-btn" src="img/arrow.svg" style="transform: scaleX(-1)">
+                                    <img class="icon-btn" src="img/arrow.svg">
+                                </div>
+                            </div>
+                            <div class="grade-type">
+                                <h4>Komplexe Leistung</h4>
+                                <div class="grades">
+                                    <span class="grade">2</span>
+                                </div>
+                                <div class="type-control">
+                                    <img class="icon-btn" src="img/arrow.svg" style="transform: scaleX(-1)">
+                                    <img class="icon-btn" src="img/arrow.svg">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="weight-control">
+                            <img class="icon-btn" src="img/increment.svg">
+                            <input value="61" maxlength="2"/>
+                            <img class="icon-btn" src="img/decrement.svg">
+                            <span>(%)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="alerts">
+                    <div class="error">Die Wichtungen ergeben zusammen nicht 100%!</div>
                 </div>
             </div>
             <div hidden class="subject" id="sample-subject-2">
