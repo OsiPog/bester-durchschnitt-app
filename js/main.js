@@ -69,6 +69,16 @@ const init = async() => {
     const btn_settings_close = document.querySelector("#settings-close");
     btn_settings_close.addEventListener("click", Settings.close)
 
+    // Logout button
+    const img_logout_btn = document.querySelector("#logout-btn");
+    img_logout_btn.removeAttribute("hidden");
+    img_logout_btn.addEventListener("click", () => {
+        delete Config._config["access_token"];
+        Config.save()
+        window.location.reload(true)
+        return false;
+    })
+
     // Load default student
     await changeStudent(select_student.value);
 
