@@ -7,7 +7,7 @@
 
 :root {
 	font-family: "Nunito";
-	font-size: clamp(8px, 1.5vh, 12px);
+	font-size: clamp(8px, 1.5vh, 10px);
 }
 
 
@@ -244,6 +244,21 @@ option {
         /* On mobile the system buttons are making part of the subjects not visible */
             padding-bottom: 6vh;
         }
+        #grades>.subject>.alerts {
+            font-size: 1.5rem;
+            width: 100%;
+            text-align: center;
+        }
+            #grades>.subject>.alerts>div {
+                width: fit-content;
+                border-radius: 1rem;
+                padding: 1rem;
+                background-color: #ff1b1ba7;
+                color:#410707;
+                margin-bottom: 2rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
         #grades>.subject>h2 {
             font-weight: normal;
             word-wrap: normal;
