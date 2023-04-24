@@ -72,8 +72,10 @@ const changeStudent = async(student_id) => {
                 "name": response_subject["name"],
                 "types": {}
             };
+            const local_id = response_subject["local_id"].replace(/\//g, "")
 
-            interval["subjects"][response_subject["local_id"]] = subject
+
+            interval["subjects"][local_id] = subject
         }
     }
 
@@ -90,7 +92,7 @@ const changeStudent = async(student_id) => {
             "intervals",
             response_grade["collection"]["interval_id"],
             "subjects",
-            response_grade["collection"]["subject"]["local_id"],
+            response_grade["collection"]["subject"]["local_id"].replace(/\//g, ""),
             "types",
             response_grade["collection"]["type"]
         ], STUDENT)
@@ -120,7 +122,8 @@ const changeStudent = async(student_id) => {
     // Adding default categories
     CATEGORIES = new Object();
     for (const response_subject of response["subjects"]) {
-        CATEGORIES[response_subject.local_id] = [
+        const local_id = response_subject["local_id"].replace(/\//g, "")
+        CATEGORIES[local_id] = [
             {
                 id: 0,
                 name: "KA/Klausur",
@@ -167,7 +170,7 @@ const changeStudent = async(student_id) => {
                         category_id,
                         attribute,
                     ] = patch.route
-
+                    
                     for (const category of CATEGORIES[local_id]) {
                         if (Number(category["id"]) === Number(category_id)) {
                             category[attribute] = Number(patch.value)
