@@ -73,8 +73,7 @@ const init = async() => {
     const img_logout_btn = document.querySelector("#logout-btn");
     img_logout_btn.removeAttribute("hidden");
     img_logout_btn.addEventListener("click", () => {
-        delete Config._config["access_token"];
-        Config.save()
+        localStorage.clear()
         window.location.reload(true)
         return false;
     })
