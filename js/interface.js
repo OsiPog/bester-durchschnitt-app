@@ -459,19 +459,18 @@ const updateGrades = () => {
             const sum = c_sum_count_weight[category_id]["sum"];
             const count = c_sum_count_weight[category_id]["count"];
 
-            // Delete any category which has a count of none, thus no grades.
+            // Delete any category's weight control which has a count of none, thus no grades.
             if (count === 0) {
-                const div_category = div_subject_body.querySelector(
-                    `div.category[c-id="${category_id}"]`);
+                const div_category_weight_control = div_subject_body.querySelector(
+                    `div.category[c-id="${category_id}"]>.weight-control`);
                 // Remove the div
-                div_category.parentElement.removeChild(div_category);
+                div_category_weight_control.parentElement.removeChild(div_category_weight_control);
                 
-                // If only one category is left, remove the weight control
-                const divs_category = div_subject_body.querySelectorAll("div.category")
-                if (divs_category.length == 1) {
+                // If only one weight control is left, remove it
+                const divs_weight_control = div_subject_body.querySelectorAll("div.weight-control")
+                if (divs_weight_control.length == 1) {
                     ignore_weighting = true
-                    const div_weight_control = divs_category[0].querySelector(".weight-control")
-                    div_weight_control.parentElement.removeChild(div_weight_control)
+                    divs_weight_control[0].parentElement.removeChild(divs_weight_control[0])
                 }
             }
             else {
