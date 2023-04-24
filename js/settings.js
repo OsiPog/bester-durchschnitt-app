@@ -104,7 +104,7 @@ const Settings = {
                         else {
                             // Multiply all weights by the same integer until they're all integers
                             category.weight *=  i
-                            if ((Math.abs(category.weight - Math.round(category.weight)) < 0.01)
+                            if ((Math.abs(category.weight - Math.round(category.weight)) < 0.05)
                                 || (i === 100)) {
                                 category.weight = Math.round(category.weight)
                             }
