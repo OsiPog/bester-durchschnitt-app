@@ -270,7 +270,7 @@ option {
 }
         #grades>.subject:last-child {
         /* On mobile the system buttons are making part of the subjects not visible */
-            padding-bottom: 6vh;
+            padding-bottom: 9vh;
         }
         #grades>.subject>.alerts {
             font-size: 1.5rem;
