@@ -55,6 +55,9 @@ const init = async() => {
         await changeStudent(select_student.value);
     })
 
+    // Load default student
+    await changeStudent(select_student.value);
+
     // student selection is visible
     select_student.removeAttribute("hidden");
 
@@ -81,9 +84,6 @@ const init = async() => {
     // Overall average div
     const div_overall_average = document.querySelector("#overall-average");
     div_overall_average.removeAttribute("hidden")
-
-    // Load default student
-    await changeStudent(select_student.value);
 
     // First time of updating the settings
     Settings.update()
