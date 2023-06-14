@@ -192,7 +192,7 @@ const changeStudent = async(student_id) => {
 
 
 // Update the grade container
-const updateGrades = () => {
+const updateGrades = (return_rounded=false) => {
     // The base container for all subject
     const root_div_grades = document.querySelector("#grades");
 
@@ -495,7 +495,7 @@ const updateGrades = () => {
             average_text = "Fehler"
         else {
             // On success add the average to the dict
-            averages[local_id] = average
+            averages[local_id] = return_rounded ? Math.round(average) : average
         }
 
         if ((Settings.selected.using_percent) && (weights_sum !== 100) && !ignore_weighting) {
