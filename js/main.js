@@ -11,7 +11,7 @@ const init = async() => {
     Settings.init()
 
     // Check the parameters for any action
-    if (URLParameterHandler.check() === "STOP") return;
+    if (await URLParameterHandler.check() === "STOP") return;
 
     setLoading(true);
     // Depending on the login status change these elements
@@ -87,6 +87,9 @@ const init = async() => {
 
     // First time of updating the settings
     Settings.update()
+
+    // Check the parameters again for any post loading events
+    await URLParameterHandler.check()
 }
 
 init()

@@ -24,20 +24,106 @@ const URLParameterHandler = {
     },
 
 
-    check: () => {
+    check: async () => {
         const parameters = URLParameterHandler.getAll();
+        let return_stop = false
 
-        // Check lastly because it could return "STOP"
-        // assigned not compared
-        if (params = parameters["debug"]) {
-            if (params.includes("style")) {
-                const sample_subject = document.querySelector("#sample-subject-1");
-                sample_subject.removeAttribute("hidden");
-                const div_overall_average = document.querySelector("#overall-average");
-                div_overall_average.removeAttribute("hidden");
-                return "STOP";
+        for (const param in parameters) {
+            const values = parameters[param]
+            // assigned not compared
+
+            switch (param) {
+                case "export":
+                    if (!STUDENT) break
+                    if (values.includes("derabirechner")) {
+                        // Hide grades
+                        const div_grades = document.querySelector("#grades")
+                        const div_overall_average = document.querySelector("#overall-average")
+                        console.log(div_grades, div_overall_average)
+
+                        div_grades.setAttribute("style", "display:none !important")
+                        div_overall_average.setAttribute("style", "display:none !important")
+
+                        // get years
+                        const years = Array();
+                        for (const year of await getJSON("years")) {
+                            years.push({
+                                "label": year.name,
+                                "identifier": year.id,
+                            })
+                        }
+                        changeYear(years.at(-1)["identifier"]) // Fix for the right subjects
+
+                        // subjects
+                        const subjects = Array()
+                        for (const local_id in STUDENT["intervals"][Settings.selected.interval_id]["subjects"]) {
+                            const subject = STUDENT["intervals"][Settings.selected.interval_id]["subjects"][local_id]
+                            subjects.push({
+                                "label": subject["name"].length < 16 ? subject["name"] : local_id,
+                                "identifier": local_id,
+                            })
+                        }
+
+                        // states
+                        const states = [
+                            {
+                                "label": "Sachsen",
+                                "id": "SN"
+                            }
+                        ]
+
+                        // Setup selection menu
+                        const selected = {
+                            year11: years[0]["identifier"],
+                            year12: years[0]["identifier"],
+                            lk1: subjects[0]["identifier"],
+                            lk2: subjects[0]["identifier"],
+                            p3: subjects[0]["identifier"],
+                            p4: subjects[0]["identifier"],
+                            p5: subjects[0]["identifier"],
+                            url: "/bundesland/Sachsen/Gymnasium%2FGemeinschaftsschule"
+                        }
+
+                        Settings.clear()
+                        Settings.setTitle("Endnotenexport nach derabirechner.de")
+
+                        Settings.addSetting("Schuljahr 11", years, (id) => selected.year11 = id)
+                        Settings.addSetting("Schuljahr 12", years, (id) => selected.year12 = id)
+                        Settings.addSetting("1. Leistungskurs", subjects, (id) => selected.lk1 = id)
+                        Settings.addSetting("2. Leistungskurs", subjects, (id) => selected.lk2 = id)
+                        Settings.addSetting("3. Prüfungfach", subjects, (id) => selected.p3 = id)
+                        Settings.addSetting("4. Prüfungfach", subjects, (id) => selected.p4 = id)
+                        Settings.addSetting("5. Prüfungfach", subjects, (id) => selected.p5 = id)
+                        Settings.addSetting("Bundesland", states, (id) => {
+                            switch (id) {
+                                case "SN":
+                                    selected.url = "/bundesland/Sachsen/Gymnasium%2FGemeinschaftsschule"
+                            }
+                        })
+
+                        // click action on okay button
+                        const button = document.querySelector("#settings-close")
+                        button.addEventListener("click", () => {
+                            console.log(selected)
+                        })
+
+                        Settings.open()
+
+                    }
+                    break
+
+                case "debug":
+                    if (values.includes("style")) {
+                        const sample_subject = document.querySelector("#sample-subject-1");
+                        sample_subject.removeAttribute("hidden");
+                        const div_overall_average = document.querySelector("#overall-average");
+                        div_overall_average.removeAttribute("hidden");
+                        return_stop = true
+                    }
             }
         }
+
+        return return_stop ? "STOP" : null
     },
 
     removeParameters: (...parameters) => {
