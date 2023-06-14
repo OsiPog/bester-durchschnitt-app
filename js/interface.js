@@ -202,6 +202,10 @@ const updateGrades = () => {
     // Overall average
     let overall_average_count = 0;
     let overall_average_sum = 0;
+    
+    // the dict to return at the end, holds the local_ids of the subject as keys and the average
+    // as the valu
+    const averages = {}
 
     // Go through all subjects in the selected interval
     for(const local_id in 
@@ -489,6 +493,10 @@ const updateGrades = () => {
         average_text = average.toFixed(2)
         if (average_text === "NaN") 
             average_text = "Fehler"
+        else {
+            // On success add the average to the dict
+            averages[local_id] = average
+        }
 
         if ((Settings.selected.using_percent) && (weights_sum !== 100) && !ignore_weighting) {
             average_text = "Fehler"
@@ -533,4 +541,6 @@ const updateGrades = () => {
         overall_average = overall_average.toFixed(2)
     }
     span_overall_average.innerText = `∅ ${overall_average}`
+
+    return averages
 }
