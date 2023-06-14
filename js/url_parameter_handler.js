@@ -183,10 +183,11 @@ const URLParameterHandler = {
 
         // Giving the first parameter thats left a leading "?".
         const left_parameters = new_href.match(/(\?|&).+?=.+?(?=(&|$))/g);
+        console.log(left_parameters)
         if (left_parameters) {
             let first_param = left_parameters[0];
 
-            new_href.replace(first_param, 
+            new_href = new_href.replace(first_param, 
                 `?${first_param.slice(1,first_param.length)}`);
         }
 
