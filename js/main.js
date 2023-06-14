@@ -85,14 +85,6 @@ const checkURLParameters = async () => {
                     // click action on okay button
                     const button = document.querySelector("#settings-close")
                     button.addEventListener("click", async() => {
-                        // Swap key and value for easier handling later
-                        const selected_subjects = {}
-                        selected_subjects[selected.lk1] = "lk1"
-                        selected_subjects[selected.lk2] = "lk2"
-                        selected_subjects[selected.p3] = "p3"
-                        selected_subjects[selected.p4] = "p4"
-                        selected_subjects[selected.p5] = "p5"
-
                         // Make the array that holds all averages
                         const averages = []
 
