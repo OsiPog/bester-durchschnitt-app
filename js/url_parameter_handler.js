@@ -206,8 +206,7 @@ const URLParameterHandler = {
         else {
             for (const param in parameters) {
                 const value = parameters[param]
-                const match = new_href.match(new RegExp(`(?:\\?|&)${param}=(.+?)(?=\\?|&|$)`))
-    
+                const match = new_href.match(new RegExp(`(?:\\?|&)${param}=.+?(?=\\?|&|$)`))
                 if (match) {
                     new_href = new_href.replace(match, String(match).replace(String(match).split("=")[1], value))
                 }
