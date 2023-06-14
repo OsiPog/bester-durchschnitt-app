@@ -34,8 +34,14 @@ const URLParameterHandler = {
 
             switch (param) {
                 case "export":
+                    // Remember this parameter even after reload
+                    Config.set("export", "derabirechner")
+
                     if (!STUDENT) break
                     if (values.includes("derabirechner")) {
+                        // Remove memory of export param
+                        Config.set("export", "")
+
                         // Hide grades
                         const div_grades = document.querySelector("#grades")
                         const div_overall_average = document.querySelector("#overall-average")
@@ -141,10 +147,12 @@ const URLParameterHandler = {
                             Settings.selected.interval_id = interval_ids[1]
                             averages.push(updateGrades())
 
-                            console.log(averages)
+                            console.log(averages, selected)
                         })
 
                         Settings.open()
+
+                        return_stop = true
 
                     }
                     break
@@ -183,15 +191,45 @@ const URLParameterHandler = {
         }
 
         // Updating the href
+        URLParameterHandler.updateHref(new_href)
+    },
+
+    setParameters: (parameters) => {
+        let new_href = window.location.href
+        if (Object.keys(URLParameterHandler.getAll()).length === 0) {
+                new_href += (new_href.at(-1)==="/" ? "" : "/") + "?"
+                for (const param in parameters) {
+                    new_href += param + "=" + parameters[param] + "&"
+                }
+                new_href = new_href.slice(0, new_href.length-1)
+        }
+        else {
+            for (const param in parameters) {
+                const value = parameters[param]
+                const match = new_href.match(new RegExp(`(?:\\?|&)${param}=(.+?)(?=\\?|&|$)`))
+    
+                if (match) {
+                    new_href = new_href.replace(match, String(match).replace(String(match).split("=")[1], value))
+                }
+                else {
+                    new_href += "&" + param + "=" + value
+                }
+            }
+        }
+
+        URLParameterHandler.updateHref(new_href)
+    },
+
+    updateHref: (href) => {
         // Making sure to only update if it's not the same
-        if(new_href !== window.location.href) {
-            // Basically `window.location.href = new_href` but without
+        if(href !== window.location.href) {
+            // Basically `window.location.href = href` but without
             // reloading of the page (reloading causes problems on Safari)
             const root = document.querySelector(":root");
             window.history.pushState({
                 "html": root.innerHTML,
                 "pageTitle": document.title,
-            },"", new_href);
+            },"", href);
         }
     }
 }
