@@ -12,9 +12,8 @@ const Settings = {
     },
 
     update: async() => {
-        const div_entries = document.querySelector("#settings>.body>.entries");
-        // Clear all entries
-        div_entries.innerHTML = ""
+        Settings.clear()
+        Settings.setTitle("Einstellungen")
 
         // years
         let options = Array();
@@ -198,5 +197,16 @@ const Settings = {
 
         // fire the handler once a different option was selected
         select.addEventListener("change", () => {handler(select.value)})
-    }
+    },
+
+    clear: () => {
+        const div_entries = document.querySelector("#settings>.body>.entries");
+        // Clear all entries
+        div_entries.innerHTML = ""
+    },
+
+    setTitle: (title) => {
+        const h1_settings = document.querySelector("#settings>.body>h1")
+        h1_settings.innerText = title
+    },
 }
