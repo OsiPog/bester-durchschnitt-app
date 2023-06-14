@@ -1,3 +1,149 @@
+const checkURLParameters = async () => {
+    const parameters = URLParameterHandler.getAll();
+    let return_stop = false
+
+    for (const param in parameters) {
+        const values = parameters[param]
+
+        switch (param) {
+            case "export":
+                // Remember this parameter even after reload
+                Config.set("export", "derabirechner")
+
+                if (!STUDENT) break
+                if (values.includes("derabirechner")) {
+                    // Remove memory of export param
+                    Config.set("export", "")
+
+                    // Hide grades
+                    const div_grades = document.querySelector("#grades")
+                    const div_overall_average = document.querySelector("#overall-average")
+
+                    div_grades.setAttribute("style", "display:none !important")
+                    div_overall_average.setAttribute("style", "display:none !important")
+
+                    // get years
+                    const years = Array();
+                    for (const year of await getJSON("years")) {
+                        years.push({
+                            "label": year.name,
+                            "identifier": year.id,
+                        })
+                    }
+                    await changeYear(years.at(-1)["identifier"]) // Fix for the right subjects
+                    await changeStudent(STUDENT.id)
+
+                    // subjects
+                    const subjects = Array()
+                    for (const local_id in STUDENT["intervals"][Settings.selected.interval_id]["subjects"]) {
+                        const subject = STUDENT["intervals"][Settings.selected.interval_id]["subjects"][local_id]
+                        subjects.push({
+                            "label": subject["name"].length < 16 ? subject["name"] : local_id,
+                            "identifier": local_id,
+                        })
+                    }
+
+                    // states
+                    const states = [
+                        {
+                            "label": "Sachsen",
+                            "id": "SN"
+                        }
+                    ]
+
+                    // Setup selection menu
+                    const selected = {
+                        year11: years[0]["identifier"],
+                        year12: years[0]["identifier"],
+                        subjects: {
+                            lk1: subjects[0]["identifier"],
+                            lk2: subjects[0]["identifier"],
+                            p3: subjects[0]["identifier"],
+                            p4: subjects[0]["identifier"],
+                            p5: subjects[0]["identifier"],
+                        },
+                        url: "/bundesland/Sachsen/Gymnasium%2FGemeinschaftsschule"
+                    }
+
+                    Settings.clear()
+                    Settings.setTitle("Endnotenexport nach derabirechner.de")
+
+                    Settings.addSetting("Schuljahr 11", years, (id) => selected.year11 = id)
+                    Settings.addSetting("Schuljahr 12", years, (id) => selected.year12 = id)
+                    Settings.addSetting("1. Leistungskurs", subjects, (id) => selected.subjects.lk1 = id)
+                    Settings.addSetting("2. Leistungskurs", subjects, (id) => selected.subjects.lk2 = id)
+                    Settings.addSetting("3. Prüfungfach", subjects, (id) => selected.subjects.p3 = id)
+                    Settings.addSetting("4. Prüfungfach", subjects, (id) => selected.subjects.p4 = id)
+                    Settings.addSetting("5. Prüfungfach", subjects, (id) => selected.subjects.p5 = id)
+                    Settings.addSetting("Bundesland", states, (id) => {
+                        switch (id) {
+                            case "SN":
+                                selected.url = "/bundesland/Sachsen/Gymnasium%2FGemeinschaftsschule"
+                        }
+                    })
+
+                    // click action on okay button
+                    const button = document.querySelector("#settings-close")
+                    button.addEventListener("click", async() => {
+                        // Swap key and value for easier handling later
+                        const selected_subjects = {}
+                        selected_subjects[selected.lk1] = "lk1"
+                        selected_subjects[selected.lk2] = "lk2"
+                        selected_subjects[selected.p3] = "p3"
+                        selected_subjects[selected.p4] = "p4"
+                        selected_subjects[selected.p5] = "p5"
+
+                        // Make the array that holds all averages
+                        const averages = []
+
+                        // Year 11
+                        await changeYear(selected.year11)
+                        await changeStudent(STUDENT.id)
+                        let interval_ids = Object.keys(STUDENT["intervals"])
+
+                        // 11/1
+                        Settings.selected.interval_id = interval_ids[0]
+                        averages.push(updateGrades(true))
+
+                        // 11/2
+                        Settings.selected.interval_id = interval_ids[1]
+                        averages.push(updateGrades(true))
+
+                        // Year 12
+                        await changeYear(selected.year12)
+                        await changeStudent(STUDENT.id)
+                        interval_ids = Object.keys(STUDENT["intervals"])
+
+                        // 12/1
+                        Settings.selected.interval_id = interval_ids[0]
+                        averages.push(updateGrades(true))
+
+                        // 12/2
+                        Settings.selected.interval_id = interval_ids[1]
+                        averages.push(updateGrades(true))
+
+                        // redirect to derabirechner.de
+                        window.location.href = "https://derabirechner.de" + selected.url + "?import=" + JSON.stringify([averages, selected.subjects]) 
+                    })
+
+                    Settings.open()
+                }
+                break
+
+            case "debug":
+                if (values.includes("style")) {
+                    const sample_subject = document.querySelector("#sample-subject-1");
+                    sample_subject.removeAttribute("hidden");
+                    const div_overall_average = document.querySelector("#overall-average");
+                    div_overall_average.removeAttribute("hidden");
+                    return_stop = true
+                }
+        }
+    }
+
+    return return_stop ? "STOP" : null
+}
+
 // Globals
 let STUDENT;
 let CATEGORIES;
@@ -10,8 +156,11 @@ const init = async() => {
     // Settings
     Settings.init()
 
+    // We don't want to lose the export param after login of the user
+    if (Config.get("export")) URLParameterHandler.setParameters({"export": Config.get("export")})
+
     // Check the parameters for any action
-    if (await URLParameterHandler.check() === "STOP") return;
+    if (await checkURLParameters() === "STOP") return;
 
     setLoading(true);
     // Depending on the login status change these elements
@@ -89,7 +238,7 @@ const init = async() => {
     Settings.update()
 
     // Check the parameters again for any post loading events
-    await URLParameterHandler.check()
+    await checkURLParameters()
 }
 
 init()
