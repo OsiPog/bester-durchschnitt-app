@@ -39,7 +39,6 @@ const URLParameterHandler = {
                         // Hide grades
                         const div_grades = document.querySelector("#grades")
                         const div_overall_average = document.querySelector("#overall-average")
-                        console.log(div_grades, div_overall_average)
 
                         div_grades.setAttribute("style", "display:none !important")
                         div_overall_average.setAttribute("style", "display:none !important")
@@ -52,7 +51,8 @@ const URLParameterHandler = {
                                 "identifier": year.id,
                             })
                         }
-                        changeYear(years.at(-1)["identifier"]) // Fix for the right subjects
+                        await changeYear(years.at(-1)["identifier"]) // Fix for the right subjects
+                        await changeStudent(STUDENT.id)
 
                         // subjects
                         const subjects = Array()
@@ -103,8 +103,45 @@ const URLParameterHandler = {
 
                         // click action on okay button
                         const button = document.querySelector("#settings-close")
-                        button.addEventListener("click", () => {
-                            console.log(selected)
+                        button.addEventListener("click", async() => {
+                            // Swap key and value for easier handling later
+                            const selected_subjects = {}
+                            selected_subjects[selected.lk1] = "lk1"
+                            selected_subjects[selected.lk2] = "lk2"
+                            selected_subjects[selected.p3] = "p3"
+                            selected_subjects[selected.p4] = "p4"
+                            selected_subjects[selected.p5] = "p5"
+
+                            // Make the array that holds all averages
+                            const averages = []
+
+                            // Year 11
+                            await changeYear(selected.year11)
+                            await changeStudent(STUDENT.id)
+                            let interval_ids = Object.keys(STUDENT["intervals"])
+
+                            // 11/1
+                            Settings.selected.interval_id = interval_ids[0]
+                            averages.push(updateGrades())
+
+                            // 11/2
+                            Settings.selected.interval_id = interval_ids[1]
+                            averages.push(updateGrades())
+
+                            // Year 12
+                            await changeYear(selected.year12)
+                            await changeStudent(STUDENT.id)
+                            interval_ids = Object.keys(STUDENT["intervals"])
+
+                            // 12/1
+                            Settings.selected.interval_id = interval_ids[0]
+                            averages.push(updateGrades())
+
+                            // 12/2
+                            Settings.selected.interval_id = interval_ids[1]
+                            averages.push(updateGrades())
+
+                            console.log(averages)
                         })
 
                         Settings.open()
